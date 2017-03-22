@@ -32,12 +32,12 @@ public class GetAllMsgsCommand implements Command
 	    		  for(Message message : messages){
 	    			  out.write(message.getSender() + "\r\n");
 	    			  out.write(message.getDate() + "\r\n");
-	    			  out.write(message.getContent() + "\r\n");
+	    			  out.write(message.getContent() + "\r\n\r\n");
 	    		  }
 	    		  out.flush();
 	    	  }
 	    	  else{
-	    		  out.write("200" + "\r\n");
+	    		  out.write("500" + "\r\n");
 	        	  out.write("No Messages" + "\r\n");
 	    		  out.flush();
 	    	  }

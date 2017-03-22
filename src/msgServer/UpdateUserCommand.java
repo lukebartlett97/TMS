@@ -15,9 +15,22 @@ public class UpdateUserCommand implements Command  {
 	    this.out = out;
 	    this.conn = serverConn;
 	  }
+	  public void editFile(String username, int field, String value){
+		  //Stores userDetails in file
+	  }
 
 	  public void execute() throws IOException
 	  {
-		//TODO: code stuff;
+		/*PROTOCOL:
+		Update User
+		108
+		<username>
+		<changeString>
+		<newValue>
+		
+		Needs to prompt for each <> using in.readLine()
+		Works out field based on changeString
+		Calls editFile(username, field, value) 
+		*/
 	  }
 }
