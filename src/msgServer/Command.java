@@ -3,6 +3,6 @@ import java.io.IOException;
 
 public interface Command 
 {
-	//Test
+	//Test2
   public void execute() throws IOException;
 }
