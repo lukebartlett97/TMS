@@ -64,7 +64,7 @@ public class GetAllMsgsCommand implements Command
             
         //write the length of the messages returned
             
-        //Loop through the messages and write the sender, date and cotent to the outputstream (use provided methods) 
+        //Loop through the messages and write the sender, date and content to the outputstream (use provided methods) 
           
         //Flush the outputstream
            

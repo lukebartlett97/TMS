@@ -52,6 +52,14 @@ public class MsgProtocol
   /**
    * Server reponds OK
    */
+  public static final int REGISTER_USER = 107;
+  /**
+   * 
+   */
+  public static final int UPDATE_USER = 108;
+  /**
+   * 
+   */
   public static final int OK = 200;
   /**
    * Server reponds by sending one or more messages
