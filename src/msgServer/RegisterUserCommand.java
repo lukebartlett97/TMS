@@ -80,10 +80,23 @@ public class RegisterUserCommand implements Command  {
 				
 			}
 		  }
+		  
+		  for(String x : userDetails)
+		  {
+			  if (x.contains("~"))
+			  {
+				out.write("500 \r\n"); 
+				out.write("number must be 11 digits long");
+				out.flush();
+				return;
+			  }
+			  
+		  }
 
 		  storeInFile(userDetails);
 		  out.write("200 \r\n");
 		  out.flush();
+		  
 		  
 		  /*PROTOCOL:
 			Register New User
