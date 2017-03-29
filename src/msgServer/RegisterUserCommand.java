@@ -86,7 +86,7 @@ public class RegisterUserCommand implements Command  {
 			  if (x.contains("~"))
 			  {
 				out.write("500 \r\n"); 
-				out.write("number must be 11 digits long");
+				out.write("cannot contain ~ ");
 				out.flush();
 				return;
 			  }
