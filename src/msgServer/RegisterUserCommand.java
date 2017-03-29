@@ -20,7 +20,7 @@ public class RegisterUserCommand implements Command  {
 		  //Stores userDetails in file
 		  FileWriter write = new FileWriter( MsgProtocol.PASSWORD_FILE , true);
 		  PrintWriter print_line = new PrintWriter(write);
-		  print_line.printf("%s=%s~%s~%s~%s",userDetails[0],userDetails[1],userDetails[2],userDetails[3],userDetails[4]);
+		  print_line.printf("%s=%s~%s~%s~%s\r\n",userDetails[0],userDetails[1],userDetails[2],userDetails[3],userDetails[4]);
 		  print_line.flush();
 		  print_line.close();
 		  
@@ -57,7 +57,7 @@ public class RegisterUserCommand implements Command  {
 			out.flush();
 			return;
 		  }
-		  if (userDetails[2] != null)
+		  if (userDetails[2].equals("") == false)
 		  {
 			if (userDetails[2].matches("([0-9]{2})/([0-9]{2})/([0-9]{4})") == false)
 			{
