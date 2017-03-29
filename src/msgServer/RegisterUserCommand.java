@@ -73,9 +73,10 @@ public class RegisterUserCommand implements Command  {
 				
 			}
 		  }
+
+		  storeInFile(userDetails);
 		  out.write("200 \r\n");
-		  
-		  
+		  out.flush();
 		  
 		  /*PROTOCOL:
 			Register New User
@@ -89,6 +90,5 @@ public class RegisterUserCommand implements Command  {
 			Needs to prompt for each <> using in.readLine()
 			Creates a String[] of userDetails and then calls storeInFile(userDetails)
 		   */
-		  storeInFile(userDetails);
 	  }
 }
