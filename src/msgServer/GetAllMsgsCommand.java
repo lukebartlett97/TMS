@@ -27,8 +27,8 @@ public class GetAllMsgsCommand implements Command {
 				Message[] messages = null;
 				messages = conn.getServer().getMessages().getAllMessages(user);
 				if (messages != null) {
-					int responseCode = 200 + messages.length;
-					out.write(Integer.toString(responseCode) + "\r\n");
+					out.write("200\r\n");
+					out.write(Integer.toString(messages.length) + "\r\n");
 					for (Message message : messages) {
 						out.write(message.getSender() + "\r\n");
 						out.write(message.getDate() + "\r\n");
