@@ -36,20 +36,13 @@ public class GetAllMsgsCommand implements Command {
 					}
 					out.flush();
 				} else {
-					out.write("500" + "\r\n");
-					out.write("No Messages" + "\r\n");
-					out.flush();
+					(new ErrorCommand(in, out, conn, "No Messages")).execute();
 				}
 			} else {
-				out.write("500" + "\r\n");
-				out.write("Incorrect User" + "\r\n");
-				out.flush();
-
+				(new ErrorCommand(in, out, conn, "Incorrect User")).execute();
 			}
 		} else {
-			out.write("500" + "\r\n");
-			out.write("You are not logged on" + "\r\n");
-			out.flush();
+			(new ErrorCommand(in, out, conn, "Incorrect User")).execute();
 		}
 		// intialise an array (msgs) that is used to hold all the messages read
 		// and set it's initialised value to null

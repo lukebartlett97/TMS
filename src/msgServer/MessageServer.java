@@ -1,5 +1,7 @@
 package msgServer;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.io.IOException;
 import java.io.FileInputStream;
@@ -13,6 +15,7 @@ public class MessageServer {
 	public static final int DEFAULT_PORT = 9801;
 	private int port;
 	private Properties userInfo;
+	private List<String[]> newUserInfo = new ArrayList<>();
 	private MessageCollection messages;
 	private boolean verbose;
 
