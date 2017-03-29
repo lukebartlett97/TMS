@@ -21,6 +21,7 @@ public class RegisterUserCommand implements Command  {
 
 	  public void execute() throws IOException
 	  {
+		  String[] userDetails = new String[5];
 		  /*PROTOCOL:
 			Register New User
 			107
@@ -33,5 +34,6 @@ public class RegisterUserCommand implements Command  {
 			Needs to prompt for each <> using in.readLine()
 			Creates a String[] of userDetails and then calls storeInFile(userDetails)
 		   */
+		  storeInFile(userDetails);
 	  }
 }
