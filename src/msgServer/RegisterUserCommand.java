@@ -1,5 +1,6 @@
 package msgServer;
-
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -15,8 +16,14 @@ public class RegisterUserCommand implements Command  {
 	    this.out = out;
 	    this.conn = serverConn;
 	  }
-	  public void storeInFile(String[] userDetails){
+	  public void storeInFile(String[] userDetails) throws IOException{
 		  //Stores userDetails in file
+		  FileWriter write = new FileWriter( MsgProtocol.PASSWORD_FILE , true);
+		  PrintWriter print_line = new PrintWriter(write);
+		  print_line.printf("%s=%s~%s~%s~%s",userDetails[0],userDetails[1],userDetails[2],userDetails[3],userDetails[4]);
+		  print_line.flush();
+		  print_line.close();
+		  
 	  }
 
 	  public void execute() throws IOException
