@@ -45,18 +45,34 @@ public class MsgProtocol
    * Client requests to get all messages
    * Following lines are:
    * username\r\n
-   * Server reponds by sending all messages for that user
+   * Server responds by sending all messages for that user
    */
   public static final int GET_ALL_MESSAGES = 106;
   /* -------------- Responses --------------- */
   /**
-   * Server reponds OK
+   * Server responds OK
    */
   public static final int REGISTER_USER = 107;
   /**
    * 
    */
   public static final int UPDATE_USER = 108;
+  /**
+   * 
+   */
+  public static final int SET_REMINDER = 109;
+  /**
+   * 
+   */
+  public static final int ACCESS_REMINDERS = 110;
+  /**
+   * 
+   */
+  public static final int UPDATE_REMINDER = 111;
+  /**
+   * 
+   */
+  public static final int CANCEL_REMINDER = 112;
   /**
    * 
    */

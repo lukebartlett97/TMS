@@ -46,6 +46,14 @@ public class CommandFactory
 		    return new RegisterUserCommand(in, out, serverConn);
 	  case MsgProtocol.UPDATE_USER: //108
 		    return new UpdateUserCommand(in, out, serverConn);
+	  case MsgProtocol.SET_REMINDER: //109
+		    return new SetReminderCommand(in, out, serverConn);
+	  case MsgProtocol.ACCESS_REMINDERS: //110
+		    return new AccessRemindersCommand(in, out, serverConn);
+	  case MsgProtocol.UPDATE_REMINDER: //111
+		    return new UpdateReminderCommand(in, out, serverConn);
+	  case MsgProtocol.CANCEL_REMINDER: //112
+		    return new CancelReminderCommand(in, out, serverConn);
 	    /*
 	     * Add more case statements below this comment to process 
 	     * the other commands
