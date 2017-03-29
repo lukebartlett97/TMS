@@ -16,7 +16,9 @@ public class UpdateUserCommand implements Command {
 	}
 
 	public void editFile(String username, int field, String value) {
-		// Stores userDetails in file
+		//REMEMBER: When changing username, change current user
+		//When changing ANYTHING, update userInfo in MessageServer
+		System.out.println("TEST - Username:" + username + " FieldNo:" + field + " Value:" + value);
 	}
 
 	public void execute() throws IOException {
@@ -25,78 +27,56 @@ public class UpdateUserCommand implements Command {
 		String changeVariable = in.readLine();
 		String changeValue = in.readLine();
 
-		if (conn.getServer().getUserPassword(username) == null) {
-			out.write("108 \r\n");
-			out.write("\r\n");
-			out.flush();
+		// A user is logged on
+		if (currentUser == null) {
+			(new ErrorCommand(in, out, conn, "You are not logged on")).execute();
 			return;
 		}
-		if (currentUser != null) {
-			if (currentUser.equals(username)) {
-				if (changeVariable.equalsIgnoreCase("username")) {
-					if (changeValue.equals("")) {
-						out.write("500 \r\n");
-						out.write("Username is empty \r\n");
-						out.flush();
-						return;
-					}
-					if (conn.getServer().getUserPassword(changeValue) != null) {
-						out.write("500 \r\n");
-						out.write("That username already exists \r\n");
-						out.flush();
-						return;
-					}
-					editFile(username, 0, changeValue);
 
-				}
-				if (changeVariable.equalsIgnoreCase("password")) {
-					if (changeVariable.length() <= 3) {
-						out.write("500 \r\n");
-						out.write("Password too short \r\n");
-						out.flush();
-						return;
-					}
-					editFile(username, 1, changeValue);
-				}
-				if (changeVariable.equalsIgnoreCase("dateofbirth")) {
-					if (changeVariable.equals("") == false) {
-						if (changeVariable.matches("([0-9]{2})/([0-9]{2})/([0-9]{4})") == false) {
-							out.write("500 \r\n");
-							out.write("please enter a valid date format dd/mm/yyyy \r\n");
-							out.flush();
-							return;
-
-						}
-					}
-					editFile(username, 2, changeValue);
-				}
-				if (changeVariable.equalsIgnoreCase("phonenumber")) {
-					if (changeVariable.equals("") == false)
-					  {
-						if (changeVariable.length() != 11)
-						{
-							out.write("500 \r\n"); 
-							out.write("number must be 11 digits long");
-							out.flush();
-							return;
-							
-						}
-					  }
-					
-					editFile(username, 3, changeValue);
-				}
-				if (changeVariable.equalsIgnoreCase("address")) {
-					editFile(username, 4, changeValue);
-				}
-
-			}
+		// Username entered is current user
+		if (!currentUser.equals(username)) {
+			(new ErrorCommand(in, out, conn, "You can only edit current user")).execute();
+			return;
 		}
 
-		/*
-		 * PROTOCOL: Update User 108 <username> <changeString> <newValue>
-		 * 
-		 * Needs to prompt for each <> using in.readLine() Works out field based
-		 * on changeString Calls editFile(username, field, value)
-		 */
+		// Checking which field to edit, and completing suitable validation
+		if (changeVariable.equalsIgnoreCase("username")) {
+			if (changeValue.equals("")) {
+				(new ErrorCommand(in, out, conn, "Username is empty")).execute();
+				return;
+			}
+			if (conn.getServer().getUserPassword(changeValue) != null) {
+				(new ErrorCommand(in, out, conn, "That username already exists")).execute();
+				return;
+			}
+			editFile(username, 0, changeValue);
+		} else if (changeVariable.equalsIgnoreCase("password")) {
+			if (changeVariable.length() <= 3) {
+				(new ErrorCommand(in, out, conn, "Password too short")).execute();
+				return;
+			}
+			editFile(username, 1, changeValue);
+		} else if (changeVariable.equalsIgnoreCase("dateofbirth")) {
+			if (changeVariable.equals("") == false) {
+				if (changeVariable.matches("([0-9]{2})/([0-9]{2})/([0-9]{4})") == false) {
+					(new ErrorCommand(in, out, conn, "please enter a valid date format dd/mm/yyyy")).execute();
+					return;
+				}
+			}
+			editFile(username, 2, changeValue);
+		} else if (changeVariable.equalsIgnoreCase("phonenumber")) {
+			if (changeVariable.equals("") == false) {
+				if (changeVariable.length() != 11) {
+					(new ErrorCommand(in, out, conn, "number must be 11 digits long")).execute();
+					return;
+				}
+			}
+			editFile(username, 3, changeValue);
+		} else if (changeVariable.equalsIgnoreCase("address")) {
+			editFile(username, 4, changeValue);
+		}
+		else{
+			(new ErrorCommand(in, out, conn, "Valid types: username | password | dateofbirth | phonenumber | address")).execute();
+		}
 	}
 }
