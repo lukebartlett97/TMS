@@ -42,18 +42,13 @@ public class RegisterUserCommand implements Command  {
 			out.flush();
 			return;   
 		  }
-		  if (userDetails[1].equals(""))
-		  {
-			out.write("500 \r\n"); 
-			out.write("invalid password \r\n");
-			out.flush();
-			return;  
-		  }
-		  else if (userDetails[1].length() <= 3)
+		  
+		  if (userDetails[1].length() <= 3)
 		  {
 			out.write("500 \r\n"); 
 			out.write("Password too short \r\n");
 			out.flush();
+			return;
 		  }
 		  if (userDetails[2] != null)
 		  {
@@ -62,6 +57,7 @@ public class RegisterUserCommand implements Command  {
 				out.write("500 \r\n"); 
 				out.write("please enter a valid date format dd/mm/yyyy \r\n");
 				out.flush();
+				return;
 				
 			}
 		  }
@@ -73,9 +69,11 @@ public class RegisterUserCommand implements Command  {
 				out.write("500 \r\n"); 
 				out.write("number must be 11 digits long");
 				out.flush();
+				return;
 				
 			}
 		  }
+		  out.write("200 \r\n");
 		  
 		  
 		  
