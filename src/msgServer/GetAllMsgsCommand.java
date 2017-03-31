@@ -22,28 +22,28 @@ public class GetAllMsgsCommand implements Command {
 		// check if current user is not equal to null and current user is equal
 		// to the user (use the method getCurrentUser())
 		String currentUser = conn.getCurrentUser();
-		if (currentUser != null) {
-			if (currentUser.equals(user)) {
-				Message[] messages = null;
-				messages = conn.getServer().getMessages().getAllMessages(user);
-				if (messages != null) {
-					out.write("200\r\n");
-					out.write(Integer.toString(messages.length) + "\r\n");
-					for (Message message : messages) {
-						out.write(message.getSender() + "\r\n");
-						out.write(message.getDate() + "\r\n");
-						out.write(message.getContent() + "\r\n\r\n");
-					}
-					out.flush();
-				} else {
-					(new ErrorCommand(in, out, conn, "No Messages")).execute();
-				}
-			} else {
-				(new ErrorCommand(in, out, conn, "Incorrect User")).execute();
-			}
-		} else {
+		if (currentUser == null) {
 			(new ErrorCommand(in, out, conn, "Incorrect User")).execute();
+			return;
 		}
+		if (!currentUser.equals(user)) {
+			(new ErrorCommand(in, out, conn, "Incorrect User")).execute();
+			return;
+		}
+		Message[] messages = null;
+		messages = conn.getServer().getMessages().getAllMessages(user);
+		if (messages == null) {
+			(new ErrorCommand(in, out, conn, "No Messages")).execute();
+			return;
+		}
+		out.write("200\r\n");
+		out.write(Integer.toString(messages.length) + "\r\n");
+		for (Message message : messages) {
+			out.write(message.getSender() + "\r\n");
+			out.write(message.getDate() + "\r\n");
+			out.write(message.getContent() + "\r\n\r\n");
+		}
+		out.flush();
 		// intialise an array (msgs) that is used to hold all the messages read
 		// and set it's initialised value to null
 

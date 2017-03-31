@@ -37,9 +37,7 @@ public class RegisterUserCommand implements Command {
 		userDetails[4] = in.readLine();
 
 		if (userDetails[0].equals("")) {
-			out.write("500 \r\n");
-			out.write("Username is empty \r\n");
-			out.flush();
+			(new ErrorCommand(in, out, conn, "Username is empty")).execute();
 			return;
 		} else if (conn.getServer().getUserPassword(userDetails[0]) != null) {
 			(new ErrorCommand(in, out, conn, "That username already exists")).execute();
