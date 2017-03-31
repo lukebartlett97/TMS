@@ -7,11 +7,11 @@ import java.net.Socket;
 import java.util.List;
 
 public class ReminderAlerter extends Thread {
-	List<Reminder> reminders;
+	MessageServer server;
 
-	public ReminderAlerter(List<Reminder> reminders) {
+	public ReminderAlerter(MessageServer server) {
 		super();
-		this.reminders = reminders;
+		this.server = server;
 	}
 
 	public void run() {
@@ -24,12 +24,15 @@ public class ReminderAlerter extends Thread {
 		//////// Send message to user
 		//////// Update reminder status/remove reminder
 		while (true) {
-			for (Reminder reminder : reminders) {
-				if (alertTime(reminder)) {
-					Socket userSocket = findUserSocket(reminder.getUsername());
-					if (userSocket != null) {
-						sendReminder(reminder, userSocket);
-						reminders.remove(reminder);
+			List<Reminder> reminders = getReminders();
+			if (reminders != null) {
+				for (Reminder reminder : reminders) {
+					if (alertTime(reminder)) {
+						Socket userSocket = findUserSocket(reminder.getUsername());
+						if (userSocket != null) {
+							sendReminder(reminder, userSocket);
+							reminders.remove(reminder);
+						}
 					}
 				}
 			}
@@ -45,7 +48,16 @@ public class ReminderAlerter extends Thread {
 		return false;
 	}
 
+	private List<Reminder> getReminders() {
+		return null;
+	}
+
 	private Socket findUserSocket(String username) {
+		for (MsgSvrConnection conn : server.getConnections()) {
+			if (conn.getCurrentUser().equals(username)) {
+				return conn.getSocket();
+			}
+		}
 		return null;
 	}
 

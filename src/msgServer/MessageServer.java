@@ -16,6 +16,7 @@ public class MessageServer {
 	private int port;
 	private Properties userInfo;
 	private List<String[]> newUserInfo = new ArrayList<>();
+	private List<MsgSvrConnection> connections = new ArrayList<>();
 	private MessageCollection messages;
 	private boolean verbose;
 
@@ -70,6 +71,8 @@ public class MessageServer {
 	public void startService() {
 		ServerSocket serverSocket = null;
 		Socket clientConnection = null;
+		ReminderAlerter alerter = new ReminderAlerter(this);
+		alerter.start();
 		try {
 			// print out some information to the user
 			userMsg("MessageServer: Starting message service on port " + port);
@@ -81,6 +84,7 @@ public class MessageServer {
 				userMsg("MessageServer: Accepted from " + clientConnection.getInetAddress());
 				// Create a new thread to handle this connection
 				MsgSvrConnection conn = new MsgSvrConnection(clientConnection, this);
+				connections.add(conn);
 				// if you require some information about what is going on
 				// pass true to setVerbose.
 				// If you're tired of all those messages, pass false to turn
@@ -195,5 +199,9 @@ public class MessageServer {
 		if (verbose) {
 			System.out.println("MessageServer: " + msg);
 		}
+	}
+
+	public List<MsgSvrConnection> getConnections() {
+		return connections;
 	}
 }

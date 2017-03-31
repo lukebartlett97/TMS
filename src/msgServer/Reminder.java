@@ -18,9 +18,11 @@ public class Reminder {
 		this.type = type;
 		this.message = message;
 	}
-	public String createAlertMessage(){
+
+	public String createAlertMessage() {
 		return title + "\r\n" + date + "\r\n" + type + "\r\n" + message;
 	}
+
 	public GregorianCalendar getDate() {
 		return date;
 	}

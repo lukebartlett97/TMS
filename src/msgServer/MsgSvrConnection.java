@@ -132,4 +132,8 @@ public class MsgSvrConnection extends Thread {
 			System.out.println(msg);
 		}
 	}
+
+	public Socket getSocket() {
+		return socket;
+	}
 }
