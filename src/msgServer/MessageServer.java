@@ -1,5 +1,4 @@
 package msgServer;
-import java.sql.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +45,7 @@ public class MessageServer {
 			userInfo.load(fin);
 		} catch (IOException e) {
 			// we can't open the password file
-			//throw new IOException("Can't open the password file: " + MsgProtocol.PASSWORD_FILE);
+			throw new IOException("Can't open the password file: " + MsgProtocol.PASSWORD_FILE);
 		} finally {
 			// finished, so close that input file
 			if (fin != null) {
@@ -56,15 +55,6 @@ public class MessageServer {
 				}
 			}
 		}
-		//try {
-			//Connection dbConnect = DriverManager.getConnection("jdbc:mysql://localhost:3306/userdetails", "groupcwk", "textMessaging");
-			//Statement dbStatement = dbConnect.createStatement();
-			//ResultSet dbResultSet = dbStatement.executeQuery("select * from customers");
-			//while (dbResultSet.next()) {
-				//System.out.println(dbResultSet.getString("username"));
-			//}
-		//} catch (SQLException e) {
-		//}
 	}
 
 	/**
@@ -165,11 +155,6 @@ public class MessageServer {
 	 */
 	public String getUserPassword(String user) {
 		return userInfo.getProperty(user).split("~")[0];
-		//try {
-			//Connection dbConnect = DriverManager.getConnection("jdbc:mysql://localhost:3306/userdetails", "groupcwk", "textMessaging");
-			//Statement dbStatement = dbConnect.createStatement();
-			//ResultSet dbResultSet = dbStatement.executeQuery("select username from customers");
-		//} catch (SQLException e) {} 
 	}
 
 	/**
