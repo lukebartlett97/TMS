@@ -34,6 +34,7 @@ public class UpdateUserCommand implements Command {
 		} catch (Exception exc) {
 			exc.printStackTrace();
 		}
+		conn.getServer().loadFromDatabase();
 	}
 
 	public void editFile(String username, String field, String value) {
