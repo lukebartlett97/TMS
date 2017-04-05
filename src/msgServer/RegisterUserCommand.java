@@ -2,6 +2,7 @@ package msgServer;
 
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.sql.*;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -15,6 +16,38 @@ public class RegisterUserCommand implements Command {
 		this.in = in;
 		this.out = out;
 		this.conn = serverConn;
+	}
+	public void storeInDatabase(String[] userDetails) throws IOException {
+		if (userDetails[2].equals("")){
+			userDetails[2] = null;
+		}
+		else{
+			userDetails[2] = "'" + userDetails[2] + "'";
+		}
+		if (userDetails[3].equals("")){
+			userDetails[3] = null;
+		}
+		else{
+			userDetails[3] = "'" + userDetails[3] + "'";
+		}
+		if (userDetails[4].equals("")){
+			userDetails[4] = null;
+		}
+		else{
+			userDetails[4] = "'" + userDetails[4] + "'";
+		}
+		try {
+			Connection dbConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/userdetails", "groupcwk", "textMessaging");
+			Statement dbStatement = dbConnection.createStatement();
+			String inputSql = "insert into customers "
+							+ " (username, password, DOB, telNumber, address)"
+							+ " values ('" + userDetails[0] + "', '" + userDetails[1] + "', " + userDetails[2] + ", " + userDetails[3] + ", " + userDetails[4] + ")";
+			dbStatement.executeUpdate(inputSql);
+			System.out.println("Successfully added to database.");
+		} catch (Exception exc) {
+			exc.printStackTrace();
+		}
+		conn.getServer().loadFromDatabase();
 	}
 
 	public void storeInFile(String[] userDetails) throws IOException {
@@ -49,7 +82,7 @@ public class RegisterUserCommand implements Command {
 			return;
 		}
 		if (userDetails[2].equals("") == false) {
-			if (userDetails[2].matches("([0-9]{2})/([0-9]{2})/([0-9]{4})") == false) {
+			if (userDetails[2].matches("([0-9]{4})-([0-9]{2})-([0-9]{2})") == false) {
 				(new ErrorCommand(in, out, conn, "please enter a valid date format dd/mm/yyyy")).execute();
 				return;
 
@@ -72,7 +105,7 @@ public class RegisterUserCommand implements Command {
 
 		}
 
-		storeInFile(userDetails);
+		storeInDatabase(userDetails);
 		out.write("200 \r\n");
 		out.flush();
 

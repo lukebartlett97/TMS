@@ -49,6 +49,7 @@ public class MessageServer {
 	}
 	
 	public void loadFromDatabase() {
+		newUserInfo.clear();
 		try {
 			Connection dbConnect = DriverManager.getConnection("jdbc:mysql://localhost:3306/userdetails", "groupcwk", "textMessaging");
 			Statement dbStatement = dbConnect.createStatement();
