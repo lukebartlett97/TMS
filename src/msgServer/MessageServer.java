@@ -6,6 +6,7 @@ import java.util.Properties;
 import java.io.IOException;
 import java.io.FileInputStream;
 import java.net.Socket;
+import java.sql.*;
 import java.net.ServerSocket;
 
 /**
@@ -34,7 +35,7 @@ public class MessageServer {
 		userInfo = new Properties();
 		// set up a FileInputStream which will be used to read in the user
 		// details
-		loadUserInfo();
+		loadFromDatabase();
 		// Construct a new (empty) MessageCollection
 		messages = new MessageCollection();
 		
@@ -45,6 +46,24 @@ public class MessageServer {
 	 */
 	public MessageServer() throws IOException {
 		this(DEFAULT_PORT);
+	}
+	
+	public void loadFromDatabase() {
+		try {
+			Connection dbConnect = DriverManager.getConnection("jdbc:mysql://localhost:3306/userdetails", "groupcwk", "textMessaging");
+			Statement dbStatement = dbConnect.createStatement();
+			ResultSet dbResultSet = dbStatement.executeQuery("select * from customers");
+			System.out.println("Loading from database.");
+			while (dbResultSet.next()) {
+				String[] nextUserInfo = new String[5];
+				nextUserInfo[0] = dbResultSet.getString(1);
+				System.out.print(nextUserInfo[0] + ", ");
+				nextUserInfo[1] = dbResultSet.getString(2);
+				System.out.println(nextUserInfo[1]);
+				newUserInfo.add(nextUserInfo);
+			}
+		} catch (SQLException e) {e.printStackTrace();
+		}
 	}
 	
 	private void loadUserInfo() throws IOException{
