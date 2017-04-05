@@ -15,8 +15,8 @@ import java.net.ServerSocket;
 public class MessageServer {
 	public static final int DEFAULT_PORT = 9801;
 	private int port;
-	private Properties userInfo;
-	private List<String[]> newUserInfo = new ArrayList<>();
+	private Properties oldUserInfo;
+	private List<String[]> userInfo = new ArrayList<>();
 	private MessageCollection messages;
 	private boolean verbose;
 
@@ -32,7 +32,7 @@ public class MessageServer {
 		port = portNumber;
 		// load the user details from the password file
 		// First create a new properties object
-		userInfo = new Properties();
+		oldUserInfo = new Properties();
 		// set up a FileInputStream which will be used to read in the user
 		// details
 		loadFromDatabase();
@@ -49,7 +49,7 @@ public class MessageServer {
 	}
 	
 	public void loadFromDatabase() {
-		newUserInfo.clear();
+		userInfo.clear();
 		try {
 			Connection dbConnect = DriverManager.getConnection("jdbc:mysql://localhost:3306/userdetails", "groupcwk", "textMessaging");
 			Statement dbStatement = dbConnect.createStatement();
@@ -61,7 +61,7 @@ public class MessageServer {
 				System.out.print(nextUserInfo[0] + ", ");
 				nextUserInfo[1] = dbResultSet.getString(2);
 				System.out.println(nextUserInfo[1]);
-				newUserInfo.add(nextUserInfo);
+				userInfo.add(nextUserInfo);
 			}
 		} catch (SQLException e) {e.printStackTrace();
 		}
@@ -74,7 +74,7 @@ public class MessageServer {
 			// See MsgProtocol.java for the actual filename
 			fin = new FileInputStream(MsgProtocol.PASSWORD_FILE);
 			// and load the user details
-			userInfo.load(fin);
+			oldUserInfo.load(fin);
 		} catch (IOException e) {
 			// we can't open the password file
 			throw new IOException("Can't open the password file: " + MsgProtocol.PASSWORD_FILE);
@@ -179,7 +179,7 @@ public class MessageServer {
 	 * @return String the password of this user
 	 */
 	public String getUserPassword(String user) {
-		for(String[] userInfo : newUserInfo){
+		for(String[] userInfo : userInfo){
 			if(userInfo[0].equals(user)){
 				return userInfo[1];
 			}
@@ -194,7 +194,7 @@ public class MessageServer {
 	 * @return boolean True if the user is in the password file, false otherwise
 	 */
 	public boolean isValidUser(String username) {
-		return newUserInfo.contains(username);
+		return userInfo.contains(username);
 	}
 	/**
 	 * Get the value of the verbose flag which determines whether or not logging
