@@ -34,9 +34,21 @@ public class MessageServer {
 		userInfo = new Properties();
 		// set up a FileInputStream which will be used to read in the user
 		// details
-		FileInputStream fin = null;
+		loadUserInfo();
 		// Construct a new (empty) MessageCollection
 		messages = new MessageCollection();
+		
+	}
+
+	/**
+	 * Construct a new MessageServer using the default port of 9801
+	 */
+	public MessageServer() throws IOException {
+		this(DEFAULT_PORT);
+	}
+	
+	private void loadUserInfo() throws IOException{
+		FileInputStream fin = null;
 		try {
 			// Open the file input stream from the password file
 			// See MsgProtocol.java for the actual filename
@@ -55,13 +67,6 @@ public class MessageServer {
 				}
 			}
 		}
-	}
-
-	/**
-	 * Construct a new MessageServer using the default port of 9801
-	 */
-	public MessageServer() throws IOException {
-		this(DEFAULT_PORT);
 	}
 
 	/**
@@ -154,7 +159,12 @@ public class MessageServer {
 	 * @return String the password of this user
 	 */
 	public String getUserPassword(String user) {
-		return userInfo.getProperty(user).split("~")[0];
+		for(String[] userInfo : newUserInfo){
+			if(userInfo[0].equals(user)){
+				return userInfo[1];
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -164,9 +174,8 @@ public class MessageServer {
 	 * @return boolean True if the user is in the password file, false otherwise
 	 */
 	public boolean isValidUser(String username) {
-		return (userInfo.getProperty(username) != null);
+		return newUserInfo.contains(username);
 	}
-
 	/**
 	 * Get the value of the verbose flag which determines whether or not logging
 	 * is turned on.
