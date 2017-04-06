@@ -17,5 +17,8 @@ public class AccessRemindersCommand implements Command {
 
 	public void execute() throws IOException {
 		;
+
+		// Use following line to get reminder list for all users.
+		// List<Reminder> reminders = conn.getServer().getReminders();
 	}
 }

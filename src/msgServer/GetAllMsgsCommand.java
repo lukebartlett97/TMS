@@ -30,37 +30,32 @@ public class GetAllMsgsCommand implements Command {
 			(new ErrorCommand(in, out, conn, "Incorrect User")).execute();
 			return;
 		}
-		Message[] messages = null;
-		messages = conn.getServer().getMessages().getAllMessages(user);
-		if (messages == null) {
-			(new ErrorCommand(in, out, conn, "No Messages")).execute();
-			return;
-		}
-		out.write("200\r\n");
-		out.write(Integer.toString(messages.length) + "\r\n");
-		for (Message message : messages) {
-			out.write(message.getSender() + "\r\n");
-			out.write(message.getDate() + "\r\n");
-			out.write(message.getContent() + "\r\n\r\n");
-		}
-		out.flush();
 		// intialise an array (msgs) that is used to hold all the messages read
 		// and set it's initialised value to null
 
 		// use the method getAllMessages(user) to populate the msgs array
 
 		// check if msgs is not equal to null
-
+		Message[] messages = null;
+		messages = conn.getServer().getMessages().getAllMessages(user);
+		if (messages == null) {
+			(new ErrorCommand(in, out, conn, "No Messages")).execute();
+			return;
+		}
 		// write to the OutputStream the message status code as specified in the
 		// protocol
-
+		out.write("" + MsgProtocol.MESSAGE + "\r\n");
 		// write the length of the messages returned
-
+		out.write(Integer.toString(messages.length) + "\r\n");
 		// Loop through the messages and write the sender, date and content to
 		// the outputstream (use provided methods)
-
+		for (Message message : messages) {
+			out.write(message.getSender() + "\r\n");
+			out.write(message.getDate() + "\r\n");
+			out.write(message.getContent() + "\r\n\r\n");
+		}
 		// Flush the outputstream
-
+		out.flush();
 		// capture adequate errors (No messages) or (You are not logged on)
 
 	}

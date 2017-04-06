@@ -17,6 +17,8 @@ public class MessageServer {
 	private int port;
 	private Properties oldUserInfo;
 	private List<String[]> userInfo = new ArrayList<>();
+	private List<MsgSvrConnection> connections = new ArrayList<>();
+	private List<Reminder> reminders;
 	private MessageCollection messages;
 	private boolean verbose;
 
@@ -38,7 +40,7 @@ public class MessageServer {
 		loadFromDatabase();
 		// Construct a new (empty) MessageCollection
 		messages = new MessageCollection();
-		
+
 	}
 
 	/**
@@ -47,11 +49,12 @@ public class MessageServer {
 	public MessageServer() throws IOException {
 		this(DEFAULT_PORT);
 	}
-	
+
 	public void loadFromDatabase() {
 		userInfo.clear();
 		try {
-			Connection dbConnect = DriverManager.getConnection("jdbc:mysql://localhost:3306/userdetails", "groupcwk", "textMessaging");
+			Connection dbConnect = DriverManager.getConnection("jdbc:mysql://localhost:3306/userdetails", "groupcwk",
+					"textMessaging");
 			Statement dbStatement = dbConnect.createStatement();
 			ResultSet dbResultSet = dbStatement.executeQuery("select * from customers");
 			System.out.println("Loading from database.");
@@ -63,11 +66,12 @@ public class MessageServer {
 				System.out.println(nextUserInfo[1]);
 				userInfo.add(nextUserInfo);
 			}
-		} catch (SQLException e) {e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
-	
-	private void loadUserInfo() throws IOException{
+
+	private void loadUserInfo() throws IOException {
 		FileInputStream fin = null;
 		try {
 			// Open the file input stream from the password file
@@ -111,6 +115,7 @@ public class MessageServer {
 				// If you're tired of all those messages, pass false to turn
 				// them off
 				conn.setVerbose(true);
+				connections.add(conn);
 				// Start the new thread
 				conn.start();
 				// now loop around to await the next connection
@@ -179,8 +184,8 @@ public class MessageServer {
 	 * @return String the password of this user
 	 */
 	public String getUserPassword(String user) {
-		for(String[] userInfo : userInfo){
-			if(userInfo[0].equals(user)){
+		for (String[] userInfo : userInfo) {
+			if (userInfo[0].equals(user)) {
 				return userInfo[1];
 			}
 		}
@@ -196,6 +201,7 @@ public class MessageServer {
 	public boolean isValidUser(String username) {
 		return userInfo.contains(username);
 	}
+
 	/**
 	 * Get the value of the verbose flag which determines whether or not logging
 	 * is turned on.
@@ -224,5 +230,21 @@ public class MessageServer {
 		if (verbose) {
 			System.out.println("MessageServer: " + msg);
 		}
+	}
+
+	public List<MsgSvrConnection> getConnections() {
+		return connections;
+	}
+
+	public List<Reminder> getReminders() {
+		return reminders;
+	}
+
+	public void addReminder(Reminder reminder) {
+		reminders.add(reminder);
+	}
+
+	public void removeReminder(Reminder reminder) {
+		reminders.remove(reminder);
 	}
 }

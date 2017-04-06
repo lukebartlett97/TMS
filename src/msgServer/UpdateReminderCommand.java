@@ -21,5 +21,7 @@ public class UpdateReminderCommand implements Command {
 
 	public void execute() throws IOException {
 		;
+		//Use following line to get reminder list.
+		//List<Reminder> reminders = conn.getServer().getReminders();
 	}
 }

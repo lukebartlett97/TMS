@@ -27,5 +27,9 @@ public class SetReminderCommand implements Command {
 		 * 
 		 * Prompts for each <> and checks they are valid. Calls SaveReminder()
 		 */
+		
+		
+		//Use following line to add a reminder to the list.
+		//conn.getServer().addReminder(reminder);
 	}
 }

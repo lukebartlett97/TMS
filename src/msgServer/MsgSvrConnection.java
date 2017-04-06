@@ -108,6 +108,10 @@ public class MsgSvrConnection extends Thread {
 		return currentUser;
 	}
 
+	public Socket getSocket() {
+		return socket;
+	}
+
 	/**
 	 * Set the username of the current user. This should only be called by the
 	 * LoginCommand when a new user logs in. Other command classes use the

@@ -73,5 +73,6 @@ public class MsgProtocol {
 	 * The server sends an error message Requires a one line error message
 	 * terminated by \r\n
 	 */
+	public static final int REMINDER = 300;
 	public static final int ERROR = 500;
 }

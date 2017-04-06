@@ -21,5 +21,7 @@ public class CancelReminderCommand implements Command {
 
 	public void execute() throws IOException {
 		;
+		//Use following line to remove a reminder from the list.
+		//conn.getServer().removeReminder(reminder);
 	}
 }

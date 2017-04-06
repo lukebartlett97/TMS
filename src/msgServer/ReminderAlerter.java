@@ -7,32 +7,31 @@ import java.net.Socket;
 import java.util.List;
 
 public class ReminderAlerter extends Thread {
-	List<Reminder> reminders;
+	private MessageServer server;
 
-	public ReminderAlerter(List<Reminder> reminders) {
+	public ReminderAlerter(List<Reminder> reminders, MessageServer server) {
 		super();
-		this.reminders = reminders;
+		this.server = server;
 	}
 
 	public void run() {
 		;
-		// Loops over each reminder
-		//// checks if it is time for reminder to go off using
-		// alertTime(reminder)
-		////// checks where user is logged in using findUserSocket()
-		////// if socket is not null
-		//////// Send message to user
-		//////// Update reminder status/remove reminder
+		//Main thread loop
 		while (true) {
-			for (Reminder reminder : reminders) {
+			//Loops through each reminder
+			for (Reminder reminder : server.getReminders()) {
+				//Checks if it is time to give the user the alarm
 				if (alertTime(reminder)) {
+					//Finds the socket that the user is logged into - null if user isnt logged into server
 					Socket userSocket = findUserSocket(reminder.getUsername());
 					if (userSocket != null) {
+						//Sends reminder and removes it from list
 						sendReminder(reminder, userSocket);
-						reminders.remove(reminder);
+						server.removeReminder(reminder);
 					}
 				}
 			}
+			//Sleeps thread
 			try {
 				Thread.sleep(10000);
 			} catch (InterruptedException e) {
@@ -40,23 +39,33 @@ public class ReminderAlerter extends Thread {
 			}
 		}
 	}
-
+	
 	private boolean alertTime(Reminder reminder) {
+		//Checks if it is time to alert the user
 		return false;
 	}
 
 	private Socket findUserSocket(String username) {
+		//Loops through each connection
+		for (MsgSvrConnection connection : server.getConnections()) {
+			//Checks if user on that connection is the user that the reminder was set for
+			if (connection.getCurrentUser().equals(username)) {
+				//Returns the socket
+				return connection.getSocket();
+			}
+		}
+		//Returns null if user not found
 		return null;
 	}
 
 	private void sendReminder(Reminder reminder, Socket socket) {
+		//Sends reminder message to user
 		try {
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-			writer.write("300\r\n");
+			writer.write("" + MsgProtocol.REMINDER + "\r\n");
 			writer.write(reminder.createAlertMessage() + "\r\n");
 			writer.flush();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
