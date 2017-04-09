@@ -17,36 +17,40 @@ public class RegisterUserCommand implements Command {
 		this.out = out;
 		this.conn = serverConn;
 	}
+
 	public void storeInDatabase(String[] userDetails) throws IOException {
-		if (userDetails[2].equals("")){
+		// Checks if strings are empty. If so, sets them to null. Otherwise,
+		// surrounds them with ' ' to make them literals in SQL string
+		if (userDetails[2].equals("")) {
 			userDetails[2] = null;
-		}
-		else{
+		} else {
 			userDetails[2] = "'" + userDetails[2] + "'";
 		}
-		if (userDetails[3].equals("")){
+		if (userDetails[3].equals("")) {
 			userDetails[3] = null;
-		}
-		else{
+		} else {
 			userDetails[3] = "'" + userDetails[3] + "'";
 		}
-		if (userDetails[4].equals("")){
+		if (userDetails[4].equals("")) {
 			userDetails[4] = null;
-		}
-		else{
+		} else {
 			userDetails[4] = "'" + userDetails[4] + "'";
 		}
 		try {
-			Connection dbConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/userdetails", "groupcwk", "textMessaging");
+			// Starts connection
+			Connection dbConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/userdetails", "groupcwk",
+					"textMessaging");
+			// Executes SQL string input using userDetails
 			Statement dbStatement = dbConnection.createStatement();
-			String inputSql = "insert into customers "
-							+ " (username, password, DOB, telNumber, address)"
-							+ " values ('" + userDetails[0] + "', '" + userDetails[1] + "', " + userDetails[2] + ", " + userDetails[3] + ", " + userDetails[4] + ")";
+			String inputSql = "insert into customers " + " (username, password, DOB, telNumber, address)" + " values ('"
+					+ userDetails[0] + "', '" + userDetails[1] + "', " + userDetails[2] + ", " + userDetails[3] + ", "
+					+ userDetails[4] + ")";
 			dbStatement.executeUpdate(inputSql);
 			System.out.println("Successfully added to database.");
 		} catch (Exception exc) {
 			exc.printStackTrace();
 		}
+		// Reloads database
 		conn.getServer().loadFromDatabase();
 	}
 

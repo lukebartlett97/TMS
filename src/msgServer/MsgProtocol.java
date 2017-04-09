@@ -8,38 +8,46 @@ public class MsgProtocol {
 
 	/* -------------- Commands --------------- */
 	/**
-	 * client requests to login Following lines are username\r\n password\r\n
+	 * client requests help. Following lines are a list of commands and their
+	 * numbers
+	 */
+	public static final int HELP = 100;
+	/**
+	 * client requests to login. Following lines are username\r\n password\r\n
 	 */
 	public static final int LOGIN = 101;
 	/**
-	 * Client requests logout following line is: username\r\n
+	 * Client requests logout. Following line is: username\r\n
 	 */
 	public static final int LOGOUT = 102;
 	/**
-	 * client requests send a message Following lines are: sender name\r\n
+	 * client requests send a message. Following lines are: sender name\r\n
 	 * recipient name\r\n content\r\n
 	 */
 	public static final int SEND = 103;
 	/**
-	 * client requests the number of messages following lines are username\r\n
+	 * client requests the number of messages. Following lines are username\r\n
 	 */
 	public static final int MESSAGES_AVAILABLE = 104;
 	/**
-	 * Client requests to get a single message Following lines are: username\r\n
+	 * Client requests to get a single message. Following lines are:
+	 * username\r\n
 	 */
 	public static final int GET_NEXT_MESSAGE = 105;
 	/**
-	 * Client requests to get all messages Following lines are: username\r\n
+	 * Client requests to get all messages. Following lines are: username\r\n
 	 * Server responds by sending all messages for that user
 	 */
 	public static final int GET_ALL_MESSAGES = 106;
-	/* -------------- Responses --------------- */
 	/**
-	 * Server responds OK
+	 * Client requests to register new user. Following lines are: username\r\n
+	 * password\r\n DOB\r\n telephone\r\n address\r\n
 	 */
 	public static final int REGISTER_USER = 107;
 	/**
-	 * 
+	 * Client requests to register new user. Following lines are: username\r\n
+	 * changeString\r\n newValue\r\n. changeString can be: username, password,
+	 * dateofbirth, phonenumber, address
 	 */
 	public static final int UPDATE_USER = 108;
 	/**
@@ -58,8 +66,9 @@ public class MsgProtocol {
 	 * 
 	 */
 	public static final int CANCEL_REMINDER = 112;
+	/* -------------- Responses --------------- */
 	/**
-	 * 
+	 * Server responds OK
 	 */
 	public static final int OK = 200;
 	/**
@@ -70,9 +79,13 @@ public class MsgProtocol {
 	 */
 	public static final int MESSAGE = 201;
 	/**
+	 * The server sends a reminder consisting of: a title, the date/time, alert
+	 * type, and message separated by \r\n
+	 */
+	public static final int REMINDER = 300;
+	/**
 	 * The server sends an error message Requires a one line error message
 	 * terminated by \r\n
 	 */
-	public static final int REMINDER = 300;
 	public static final int ERROR = 500;
 }

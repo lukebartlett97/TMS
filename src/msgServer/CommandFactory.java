@@ -26,6 +26,8 @@ public class CommandFactory {
 			serverConn.userMsg("Read command " + command);
 			// Now decide which command identifier we have just read...
 			switch (command) {
+			case MsgProtocol.HELP: // 100
+				return new HelpCommand(in, out, serverConn);
 			case MsgProtocol.LOGIN: // 101
 				return new LoginCommand(in, out, serverConn);
 			case MsgProtocol.LOGOUT: // 102
@@ -36,6 +38,10 @@ public class CommandFactory {
 				return new GetNumMsgCommand(in, out, serverConn);
 			case MsgProtocol.GET_NEXT_MESSAGE: // 105
 				return new GetMsgCommand(in, out, serverConn);
+			/*
+			 * Add more case statements below this comment to process the other
+			 * commands
+			 */
 			case MsgProtocol.GET_ALL_MESSAGES: // 106
 				return new GetAllMsgsCommand(in, out, serverConn);
 			case MsgProtocol.REGISTER_USER: // 107
@@ -50,10 +56,6 @@ public class CommandFactory {
 				return new UpdateReminderCommand(in, out, serverConn);
 			case MsgProtocol.CANCEL_REMINDER: // 112
 				return new CancelReminderCommand(in, out, serverConn);
-			/*
-			 * Add more case statements below this comment to process the other
-			 * commands
-			 */
 
 			/*
 			 * Don't add anything below this line

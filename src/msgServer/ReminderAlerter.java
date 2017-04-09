@@ -16,22 +16,23 @@ public class ReminderAlerter extends Thread {
 
 	public void run() {
 		;
-		//Main thread loop
+		// Main thread loop
 		while (true) {
-			//Loops through each reminder
+			// Loops through each reminder
 			for (Reminder reminder : server.getReminders()) {
-				//Checks if it is time to give the user the alarm
+				// Checks if it is time to give the user the alarm
 				if (alertTime(reminder)) {
-					//Finds the socket that the user is logged into - null if user isnt logged into server
+					// Finds the socket that the user is logged into - null if
+					// user isnt logged into server
 					Socket userSocket = findUserSocket(reminder.getUsername());
 					if (userSocket != null) {
-						//Sends reminder and removes it from list
+						// Sends reminder and removes it from list
 						sendReminder(reminder, userSocket);
 						server.removeReminder(reminder);
 					}
 				}
 			}
-			//Sleeps thread
+			// Sleeps thread
 			try {
 				Thread.sleep(10000);
 			} catch (InterruptedException e) {
@@ -39,27 +40,28 @@ public class ReminderAlerter extends Thread {
 			}
 		}
 	}
-	
+
 	private boolean alertTime(Reminder reminder) {
-		//Checks if it is time to alert the user
+		// Checks if it is time to alert the user
 		return false;
 	}
 
 	private Socket findUserSocket(String username) {
-		//Loops through each connection
+		// Loops through each connection
 		for (MsgSvrConnection connection : server.getConnections()) {
-			//Checks if user on that connection is the user that the reminder was set for
+			// Checks if user on that connection is the user that the reminder
+			// was set for
 			if (connection.getCurrentUser().equals(username)) {
-				//Returns the socket
+				// Returns the socket
 				return connection.getSocket();
 			}
 		}
-		//Returns null if user not found
+		// Returns null if user not found
 		return null;
 	}
 
 	private void sendReminder(Reminder reminder, Socket socket) {
-		//Sends reminder message to user
+		// Sends reminder message to user
 		try {
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 			writer.write("" + MsgProtocol.REMINDER + "\r\n");

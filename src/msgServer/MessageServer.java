@@ -51,13 +51,17 @@ public class MessageServer {
 	}
 
 	public void loadFromDatabase() {
+		// Clear old data
 		userInfo.clear();
 		try {
+			// Connect to database
 			Connection dbConnect = DriverManager.getConnection("jdbc:mysql://localhost:3306/userdetails", "groupcwk",
 					"textMessaging");
+			// Executes SQL string input to load database
 			Statement dbStatement = dbConnect.createStatement();
 			ResultSet dbResultSet = dbStatement.executeQuery("select * from customers");
-			System.out.println("Loading from database.");
+			System.out.println("Loading from database."); // CHECK
+			// Loads each user into the list
 			while (dbResultSet.next()) {
 				String[] nextUserInfo = new String[5];
 				nextUserInfo[0] = dbResultSet.getString(1);
@@ -65,6 +69,7 @@ public class MessageServer {
 				nextUserInfo[1] = dbResultSet.getString(2);
 				System.out.println(nextUserInfo[1]);
 				userInfo.add(nextUserInfo);
+				// TODO: other info
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
