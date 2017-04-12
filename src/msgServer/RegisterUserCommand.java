@@ -19,6 +19,8 @@ public class RegisterUserCommand implements Command {
 	}
 
 	public void storeInDatabase(String[] userDetails) throws IOException {
+		Connection dbConnection = null;
+		Statement dbStatement = null;
 		// Checks if strings are empty. If so, sets them to null. Otherwise,
 		// surrounds them with ' ' to make them literals in SQL string
 		if (userDetails[2].equals("")) {
@@ -38,15 +40,17 @@ public class RegisterUserCommand implements Command {
 		}
 		try {
 			// Starts connection
-			Connection dbConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/userdetails", "groupcwk",
+			dbConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/userdetails", "groupcwk",
 					"textMessaging");
 			// Executes SQL string input using userDetails
-			Statement dbStatement = dbConnection.createStatement();
+			dbStatement = dbConnection.createStatement();
 			String inputSql = "insert into customers " + " (username, password, DOB, telNumber, address)" + " values ('"
 					+ userDetails[0] + "', '" + userDetails[1] + "', " + userDetails[2] + ", " + userDetails[3] + ", "
 					+ userDetails[4] + ")";
 			dbStatement.executeUpdate(inputSql);
 			System.out.println("Successfully added to database.");
+			dbConnection.close();
+			dbStatement.close();
 		} catch (Exception exc) {
 			exc.printStackTrace();
 		}

@@ -53,13 +53,16 @@ public class MessageServer {
 	public void loadFromDatabase() {
 		// Clear old data
 		userInfo.clear();
+		Connection dbConnect = null;
+		Statement dbStatement = null;
+		ResultSet dbResultSet = null;
 		try {
 			// Connect to database
-			Connection dbConnect = DriverManager.getConnection("jdbc:mysql://localhost:3306/userdetails", "groupcwk",
+			dbConnect = DriverManager.getConnection("jdbc:mysql://localhost:3306/userdetails", "groupcwk",
 					"textMessaging");
 			// Executes SQL string input to load database
-			Statement dbStatement = dbConnect.createStatement();
-			ResultSet dbResultSet = dbStatement.executeQuery("select * from customers");
+			dbStatement = dbConnect.createStatement();
+			dbResultSet = dbStatement.executeQuery("select * from customers");
 			System.out.println("Loading from database."); // CHECK
 			// Loads each user into the list
 			while (dbResultSet.next()) {
@@ -70,10 +73,13 @@ public class MessageServer {
 				System.out.println(nextUserInfo[1]);
 				userInfo.add(nextUserInfo);
 				// TODO: other info
-			}
+			} 
+			dbConnect.close();
+			dbStatement.close();
+			dbResultSet.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}
+		} 
 	}
 
 	private void loadUserInfo() throws IOException {

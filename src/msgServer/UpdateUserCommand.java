@@ -17,6 +17,8 @@ public class UpdateUserCommand implements Command {
 	}
 	
 	public void editDatabase(String username, String field, String value) {
+		Connection dbConnection = null;
+		Statement updateStatement = null;
 		if(value.equals("")){
 			value = null;
 		}
@@ -24,13 +26,15 @@ public class UpdateUserCommand implements Command {
 			value = "'" + value + "'";
 		}
 		try {
-			Connection dbConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/userdetails", "groupcwk", "textMessaging");
-			Statement updateStatement = dbConnection.createStatement();
+			dbConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/userdetails", "groupcwk", "textMessaging");
+			updateStatement = dbConnection.createStatement();
 			String updateSql = "update customers "
 							+ " set " + field + "=" + value
 							+ " where username= '" + username + "'";
 			updateStatement.executeUpdate(updateSql);
 			System.out.println("Successfully updated database.");
+			dbConnection.close();
+			updateStatement.close();
 		} catch (Exception exc) {
 			exc.printStackTrace();
 		}
