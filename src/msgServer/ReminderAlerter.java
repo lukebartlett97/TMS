@@ -19,7 +19,7 @@ public class ReminderAlerter extends Thread {
 		// Main thread loop
 		while (true) {
 			// Loops through each reminder
-			for (Reminder reminder : server.getReminders()) {
+			for (Reminder reminder : server.getReminders().getReminders()) {
 				// Checks if it is time to give the user the alarm
 				if (alertTime(reminder)) {
 					// Finds the socket that the user is logged into - null if
@@ -28,7 +28,7 @@ public class ReminderAlerter extends Thread {
 					if (userSocket != null) {
 						// Sends reminder and removes it from list
 						sendReminder(reminder, userSocket);
-						server.removeReminder(reminder);
+						server.getReminders().removeReminder(reminder);
 					}
 				}
 			}

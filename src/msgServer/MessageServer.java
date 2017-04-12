@@ -18,7 +18,7 @@ public class MessageServer {
 	private Properties oldUserInfo;
 	private List<String[]> userInfo = new ArrayList<>();
 	private List<MsgSvrConnection> connections = new ArrayList<>();
-	private List<Reminder> reminders;
+	private ReminderCollection reminders;
 	private MessageCollection messages;
 	private boolean verbose;
 
@@ -241,15 +241,8 @@ public class MessageServer {
 		return connections;
 	}
 
-	public List<Reminder> getReminders() {
+	public ReminderCollection getReminders() {
 		return reminders;
 	}
 
-	public void addReminder(Reminder reminder) {
-		reminders.add(reminder);
-	}
-
-	public void removeReminder(Reminder reminder) {
-		reminders.remove(reminder);
-	}
 }
