@@ -28,7 +28,7 @@ public class ReminderAlerter extends Thread {
 					if (userSocket != null) {
 						// Sends reminder and removes it from list
 						sendReminder(reminder, userSocket);
-						server.getReminders().removeReminder(reminder);
+						server.getReminders().removeReminder(reminder);;
 					}
 				}
 			}

@@ -1,28 +1,28 @@
 package msgServer;
 
-import java.util.GregorianCalendar;
+import java.time.LocalDateTime;
 
 //Class representing a reminder
 public class Reminder {
-	private GregorianCalendar date;
+	private LocalDateTime dateTime;
 	private ReminderType type;
 	private String title, message, username;
 
-	public Reminder(String username, String title, GregorianCalendar date, ReminderType type, String message) {
+	public Reminder(String username, String title, LocalDateTime dateTime, ReminderType type, String message) {
 		// TODO: Add time method. Date to subject to type change in case there
 		// is an alternative (possibly util.Date),
 		// but Tawil used GregorianCalendar in Message.java
 		this.username = username;
 		this.title = title;
-		this.date = date;
+		this.dateTime = dateTime;
 		this.type = type;
 		this.message = message;
 	}
 	public String createAlertMessage(){
-		return title + "\r\n" + date + "\r\n" + type + "\r\n" + message;
+		return title + "\r\n" + dateTime + "\r\n" + type + "\r\n" + message;
 	}
-	public GregorianCalendar getDate() {
-		return date;
+	public LocalDateTime getDate() {
+		return dateTime;
 	}
 
 	public ReminderType getType() {
