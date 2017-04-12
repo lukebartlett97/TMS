@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class SetReminderCommand implements Command {
 	private BufferedReader in;
@@ -38,8 +39,14 @@ public class SetReminderCommand implements Command {
             (new ErrorCommand(in, out, conn, "Incorrect User")).execute();
             return;
         }
+
         String currentUser = conn.getCurrentUser();
         if (!reminderDetails[0].equals(currentUser)) {
+            (new ErrorCommand(in, out, conn, "Incorrect User")).execute();
+            return;
+        }
+
+        if (currentUser == null) {
             (new ErrorCommand(in, out, conn, "Incorrect User")).execute();
             return;
         }
@@ -48,6 +55,15 @@ public class SetReminderCommand implements Command {
 			(new ErrorCommand(in, out, conn, "Title is empty")).execute();
 			return;
 		}
+
+        List<Reminder> reminders = conn.getServer().getReminders().getReminders();
+        for (Reminder reminder : reminders) {
+            if (reminder.getTitle().equals(reminderDetails[1])) {
+                (new ErrorCommand(in, out, conn, "A reminder with that title already exists")).execute();
+                return;
+            }
+        }
+
 		if (!(reminderDetails[2].equals("text"))||(reminderDetails[2].equals("sound"))||(reminderDetails[2].equals("popup"))) {
             (new ErrorCommand(in, out, conn, "Please enter a valid alert type")).execute();
             return;
