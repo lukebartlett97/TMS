@@ -5,10 +5,9 @@ import java.time.LocalDateTime;
 //Class representing a reminder
 public class Reminder {
 	private LocalDateTime dateTime;
-	private ReminderType type;
-	private String title, message, username;
+	private String title, message, username, type;
 
-	public Reminder(String username, String title, LocalDateTime dateTime, ReminderType type, String message) {
+	public Reminder(String username, String title, LocalDateTime dateTime, String type, String message) {
 		// TODO: Add time method. Date to subject to type change in case there
 		// is an alternative (possibly util.Date),
 		// but Tawil used GregorianCalendar in Message.java
@@ -25,7 +24,7 @@ public class Reminder {
 		return dateTime;
 	}
 
-	public ReminderType getType() {
+	public String getType() {
 		return type;
 	}
 

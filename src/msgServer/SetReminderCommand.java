@@ -3,6 +3,7 @@ package msgServer;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 public class SetReminderCommand implements Command {
 	private BufferedReader in;
@@ -22,6 +23,7 @@ public class SetReminderCommand implements Command {
 	//LocalDateTime
 	public void execute() throws IOException {
 		String[] reminderDetails = new String[5];
+		int[] reminderDetailsInts = new int[5];
 		reminderDetails[0] = in.readLine(); //username
 		reminderDetails[1] = in.readLine(); //title
 		reminderDetails[2] = in.readLine(); //type
@@ -56,7 +58,7 @@ public class SetReminderCommand implements Command {
             return;
 		}
 		try {
-            Integer.parseInt(reminderDetails[3]);
+            reminderDetailsInts[0] = Integer.parseInt(reminderDetails[3]);
         }
         catch (Exception e) {
             (new ErrorCommand(in, out, conn, "Year is not a valid number")).execute();
@@ -68,7 +70,7 @@ public class SetReminderCommand implements Command {
             return;
         }
         try {
-            Integer.parseInt(reminderDetails[4]);
+            reminderDetailsInts[1] = Integer.parseInt(reminderDetails[4]);
         }
         catch (Exception e) {
             (new ErrorCommand(in, out, conn, "Year is not a valid number")).execute();
@@ -80,7 +82,7 @@ public class SetReminderCommand implements Command {
             return;
         }
         try {
-            Integer.parseInt(reminderDetails[5]);
+            reminderDetailsInts[2] = Integer.parseInt(reminderDetails[5]);
         }
         catch (Exception e) {
             (new ErrorCommand(in, out, conn, "Year is not a valid number")).execute();
@@ -92,7 +94,7 @@ public class SetReminderCommand implements Command {
             return;
         }
         try {
-            Integer.parseInt(reminderDetails[6]);
+            reminderDetailsInts[3] = Integer.parseInt(reminderDetails[6]);
         }
         catch (Exception e) {
             (new ErrorCommand(in, out, conn, "Year is not a valid number")).execute();
@@ -104,15 +106,19 @@ public class SetReminderCommand implements Command {
             return;
         }
         try {
-            Integer.parseInt(reminderDetails[7]);
+            reminderDetailsInts[4] = Integer.parseInt(reminderDetails[7]);
         }
         catch (Exception e) {
             (new ErrorCommand(in, out, conn, "Year is not a valid number")).execute();
             return;
         }
 
-        Reminder reminder = null;
-		;
+        LocalDateTime dateTime = LocalDateTime.of(reminderDetailsInts[0],reminderDetailsInts[1],reminderDetailsInts[2],reminderDetailsInts[3],reminderDetailsInts[4]);
+
+        Reminder reminder = new Reminder(reminderDetails[0],reminderDetails[1],dateTime,reminderDetails[2],reminderDetails[8]);
+        conn.getServer().getReminders().addReminder(reminder);
+        out.write("200\r\n");
+        out.flush();
 		/*
 		 * PROTOCOL: Set Reminder 109 <username> <title> <"text"|"sound"|"popup"> <year> <month> <day> <hour> <minute> <message>
 		 *
