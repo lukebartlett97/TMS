@@ -36,20 +36,21 @@ public class AccessRemindersCommand implements Command {
 		}
 
 		boolean newMessage = false;
-        List<Reminder> reminders = conn.getServer().getReminders().getReminders();
+		List<Reminder> reminders = conn.getServer().getReminders().getReminders();
 		for (Reminder reminder : reminders) {
-            if (reminder.getUsername().equals(currentUser)) {
-                out.write(reminder.getTitle() + "\r\n" + reminder.getDate()+ "\r\n" + reminder.getType()+ "\r\n" + reminder.getMessage());
-                newMessage = true;
-            }
-        }
+			if (reminder.getUsername().equals(currentUser)) {
+				out.write(reminder.getTitle() + "\r\n" + reminder.getDate() + "\r\n" + reminder.getType() + "\r\n"
+						+ reminder.getMessage());
+				newMessage = true;
+			}
+		}
 
-        if (newMessage == false) {
-            out.write("No new messages");
-        }
+		if (newMessage == false) {
+			out.write("No new messages");
+		}
 
-        out.write("200\r\n");
-        out.flush();
+		out.write("200\r\n");
+		out.flush();
 
 		// Use following line to get reminder list for all users.
 		// List<Reminder> reminders = conn.getServer().getReminders();

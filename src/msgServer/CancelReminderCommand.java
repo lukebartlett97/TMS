@@ -22,37 +22,37 @@ public class CancelReminderCommand implements Command {
 
 	public void execute() throws IOException {
 
-        String username = in.readLine();
-        if (username == null) {
-            (new ErrorCommand(in, out, conn, "Incorrect User")).execute();
-            return;
-        }
+		String username = in.readLine();
+		if (username == null) {
+			(new ErrorCommand(in, out, conn, "Incorrect User")).execute();
+			return;
+		}
 
-        String currentUser = conn.getCurrentUser();
-        if (!username.equals(currentUser)) {
-            (new ErrorCommand(in, out, conn, "Incorrect User")).execute();
-            return;
-        }
+		String currentUser = conn.getCurrentUser();
+		if (!username.equals(currentUser)) {
+			(new ErrorCommand(in, out, conn, "Incorrect User")).execute();
+			return;
+		}
 
-        if (currentUser == null) {
-            (new ErrorCommand(in, out, conn, "Incorrect User")).execute();
-            return;
-        }
+		if (currentUser == null) {
+			(new ErrorCommand(in, out, conn, "Incorrect User")).execute();
+			return;
+		}
 
-        String selectedMessage = in.readLine();
-        List<Reminder> reminders = conn.getServer().getReminders().getReminders();
-        for (Reminder reminder : reminders) {
-            if (reminder.getTitle().equals(selectedMessage)) {
-                conn.getServer().getReminders().removeReminder(reminder);
-                out.write("200\r\n");
-                out.flush();
-                return;
-            }
-        }
+		String selectedMessage = in.readLine();
+		List<Reminder> reminders = conn.getServer().getReminders().getReminders();
+		for (Reminder reminder : reminders) {
+			if (reminder.getTitle().equals(selectedMessage)) {
+				conn.getServer().getReminders().removeReminder(reminder);
+				out.write("200\r\n");
+				out.flush();
+				return;
+			}
+		}
 
-        (new ErrorCommand(in, out, conn, "Selected message was not found")).execute();
+		(new ErrorCommand(in, out, conn, "Selected message was not found")).execute();
 
-		//Use following line to remove a reminder from the list.
-		//conn.getServer().removeReminder(reminder);
+		// Use following line to remove a reminder from the list.
+		// conn.getServer().removeReminder(reminder);
 	}
 }

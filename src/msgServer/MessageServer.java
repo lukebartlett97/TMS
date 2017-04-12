@@ -38,6 +38,7 @@ public class MessageServer {
 		// set up a FileInputStream which will be used to read in the user
 		// details
 		loadFromDatabase();
+		// loadUserInfo();
 		// Construct a new (empty) MessageCollection
 		messages = new MessageCollection();
 
@@ -73,13 +74,13 @@ public class MessageServer {
 				System.out.println(nextUserInfo[1]);
 				userInfo.add(nextUserInfo);
 				// TODO: other info
-			} 
+			}
 			dbConnect.close();
 			dbStatement.close();
 			dbResultSet.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} 
+		}
 	}
 
 	private void loadUserInfo() throws IOException {
