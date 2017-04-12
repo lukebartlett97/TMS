@@ -19,11 +19,103 @@ public class SetReminderCommand implements Command {
 		// Saves the reminder
 	}
 
+	//LocalDateTime
 	public void execute() throws IOException {
+		String[] reminderDetails = new String[5];
+		reminderDetails[0] = in.readLine(); //username
+		reminderDetails[1] = in.readLine(); //title
+		reminderDetails[2] = in.readLine(); //type
+		reminderDetails[3] = in.readLine(); //year
+		reminderDetails[4] = in.readLine(); //month
+		reminderDetails[5] = in.readLine(); //day
+        reminderDetails[6] = in.readLine(); //hour
+        reminderDetails[7] = in.readLine(); //minute
+        reminderDetails[8] = in.readLine(); //message
+
+        if (reminderDetails[0] == null) {
+            (new ErrorCommand(in, out, conn, "Incorrect User")).execute();
+            return;
+        }
+        String currentUser = conn.getCurrentUser();
+        if (!reminderDetails[0].equals(currentUser)) {
+            (new ErrorCommand(in, out, conn, "Incorrect User")).execute();
+            return;
+        }
+
+		if (reminderDetails[1] == null) {
+			(new ErrorCommand(in, out, conn, "Title is empty")).execute();
+			return;
+		}
+		if (!(reminderDetails[2].equals("text"))||(reminderDetails[2].equals("sound"))||(reminderDetails[2].equals("popup"))) {
+            (new ErrorCommand(in, out, conn, "Please enter a valid alert type")).execute();
+            return;
+		}
+
+		if (reminderDetails[3] == null) {
+            (new ErrorCommand(in, out, conn, "Year is empty")).execute();
+            return;
+		}
+		try {
+            Integer.parseInt(reminderDetails[3]);
+        }
+        catch (Exception e) {
+            (new ErrorCommand(in, out, conn, "Year is not a valid number")).execute();
+            return;
+        }
+
+        if (reminderDetails[4] == null) {
+            (new ErrorCommand(in, out, conn, "Year is empty")).execute();
+            return;
+        }
+        try {
+            Integer.parseInt(reminderDetails[4]);
+        }
+        catch (Exception e) {
+            (new ErrorCommand(in, out, conn, "Year is not a valid number")).execute();
+            return;
+        }
+
+        if (reminderDetails[5] == null) {
+            (new ErrorCommand(in, out, conn, "Year is empty")).execute();
+            return;
+        }
+        try {
+            Integer.parseInt(reminderDetails[5]);
+        }
+        catch (Exception e) {
+            (new ErrorCommand(in, out, conn, "Year is not a valid number")).execute();
+            return;
+        }
+
+        if (reminderDetails[6] == null) {
+            (new ErrorCommand(in, out, conn, "Year is empty")).execute();
+            return;
+        }
+        try {
+            Integer.parseInt(reminderDetails[6]);
+        }
+        catch (Exception e) {
+            (new ErrorCommand(in, out, conn, "Year is not a valid number")).execute();
+            return;
+        }
+
+        if (reminderDetails[7] == null) {
+            (new ErrorCommand(in, out, conn, "Year is empty")).execute();
+            return;
+        }
+        try {
+            Integer.parseInt(reminderDetails[7]);
+        }
+        catch (Exception e) {
+            (new ErrorCommand(in, out, conn, "Year is not a valid number")).execute();
+            return;
+        }
+
+        Reminder reminder = null;
 		;
 		/*
-		 * PROTOCOL: Set Reminder 109 <username> <date> <time>
-		 * <"text"|"sound"|"popup"> <message>
+		 * PROTOCOL: Set Reminder 109 <username> <title> <"text"|"sound"|"popup"> <year> <month> <day> <hour> <minute> <message>
+		 *
 		 * 
 		 * Prompts for each <> and checks they are valid. Calls SaveReminder()
 		 */
