@@ -42,7 +42,7 @@ public class CancelReminderCommand implements Command {
 		String selectedMessage = in.readLine();
 		List<Reminder> reminders = conn.getServer().getReminders().getReminders();
 		for (Reminder reminder : reminders) {
-			if (reminder.getTitle().equals(selectedMessage)) {
+			if (reminder.getTitle().equals(selectedMessage) && reminder.getUsername().equals(username)) {
 				conn.getServer().getReminders().removeReminder(reminder);
 				out.write("200\r\n");
 				out.flush();
