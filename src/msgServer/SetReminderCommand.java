@@ -58,13 +58,13 @@ public class SetReminderCommand implements Command {
 
         List<Reminder> reminders = conn.getServer().getReminders().getReminders();
         for (Reminder reminder : reminders) {
-            if (reminder.getTitle().equals(reminderDetails[1])) {
+            if (reminder.getTitle().equals(reminderDetails[1]) && reminder.getUsername().equals(reminderDetails[0])) {
                 (new ErrorCommand(in, out, conn, "A reminder with that title already exists")).execute();
                 return;
             }
         }
 
-		if (!(reminderDetails[2].equals("text"))||(reminderDetails[2].equals("sound"))||(reminderDetails[2].equals("popup"))) {
+		if (!(reminderDetails[2].equals("text")||reminderDetails[2].equals("sound")||reminderDetails[2].equals("popup"))) {
             (new ErrorCommand(in, out, conn, "Please enter a valid alert type")).execute();
             return;
 		}
