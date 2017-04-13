@@ -71,9 +71,14 @@ public class MessageServer {
 				nextUserInfo[0] = dbResultSet.getString(1);
 				System.out.print(nextUserInfo[0] + ", ");
 				nextUserInfo[1] = dbResultSet.getString(2);
-				System.out.println(nextUserInfo[1]);
+				System.out.print(nextUserInfo[1] + ", ");
+				nextUserInfo[2] = dbResultSet.getString(3);
+				System.out.print(nextUserInfo[2] + ", ");
+				nextUserInfo[3] = dbResultSet.getString(4);
+				System.out.print(nextUserInfo[3] + ", ");
+				nextUserInfo[4] = dbResultSet.getString(5);
+				System.out.println(nextUserInfo[4]);
 				userInfo.add(nextUserInfo);
-				// TODO: other info
 			}
 			dbConnect.close();
 			dbStatement.close();
