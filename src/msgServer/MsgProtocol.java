@@ -1,4 +1,4 @@
-package msgServer;
+	package msgServer;
 
 public class MsgProtocol {
 	/*

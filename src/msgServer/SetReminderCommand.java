@@ -19,8 +19,8 @@ public class SetReminderCommand implements Command {
 
 	// LocalDateTime
 	public void execute() throws IOException {
-		String[] reminderDetails = new String[5];
-		int[] reminderDetailsInts = new int[5];
+		String[] reminderDetails = new String[9];
+		int[] reminderDetailsInts = new int[9];
 		reminderDetails[0] = in.readLine(); // username
 		reminderDetails[1] = in.readLine(); // title
 		reminderDetails[2] = in.readLine(); // type
