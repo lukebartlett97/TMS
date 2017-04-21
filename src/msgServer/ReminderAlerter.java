@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ReminderAlerter extends Thread {
@@ -20,6 +21,7 @@ public class ReminderAlerter extends Thread {
 		// Main thread loop
 		while (true) {
 			System.out.println("Checking reminders...");
+			List<Reminder> remindersToRemove = new ArrayList<>();
 			// Loops through each reminder
 			for (Reminder reminder : server.getReminders().getReminders()) {
 				// Checks if it is time to give the user the alarm
@@ -32,9 +34,15 @@ public class ReminderAlerter extends Thread {
 						// Sends reminder and removes it from list
 						sendReminder(reminder, userSocket);
 						System.out.println("Reminder sent.");
-						server.getReminders().removeReminder(reminder);;
+						remindersToRemove.add(reminder);
+					}
+					else{
+						System.out.println("User not logged in..");						
 					}
 				}
+			}
+			for(Reminder reminder : remindersToRemove){
+				server.getReminders().removeReminder(reminder);
 			}
 			// Sleeps thread
 			try {
