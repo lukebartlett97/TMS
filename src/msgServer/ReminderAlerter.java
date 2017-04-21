@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class ReminderAlerter extends Thread {
@@ -43,7 +44,7 @@ public class ReminderAlerter extends Thread {
 
 	private boolean alertTime(Reminder reminder) {
 		// Checks if it is time to alert the user
-		return false;
+		return reminder.getDate().isBefore(LocalDateTime.now());
 	}
 
 	private Socket findUserSocket(String username) {

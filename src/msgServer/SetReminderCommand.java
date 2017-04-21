@@ -17,10 +17,6 @@ public class SetReminderCommand implements Command {
 		this.conn = serverConn;
 	}
 
-	public void SaveReminder(String username, int field, String value) {
-		// Saves the reminder
-	}
-
 	// LocalDateTime
 	public void execute() throws IOException {
 		String[] reminderDetails = new String[5];
