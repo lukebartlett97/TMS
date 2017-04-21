@@ -41,6 +41,7 @@ public class MessageServer {
 		// loadUserInfo();
 		// Construct a new (empty) MessageCollection
 		messages = new MessageCollection();
+		reminders = new ReminderCollection();
 
 	}
 
