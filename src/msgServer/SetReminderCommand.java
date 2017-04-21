@@ -46,19 +46,25 @@ public class SetReminderCommand implements Command {
 			(new ErrorCommand(in, out, conn, "Incorrect User")).execute();
 			return;
 		}
+		System.out.println("User checked.");
 
 		if (reminderDetails[1] == null) {
 			(new ErrorCommand(in, out, conn, "Title is empty")).execute();
 			return;
 		}
 
+		System.out.println("Title checked.");
 		List<Reminder> reminders = conn.getServer().getReminders().getReminders();
-		for (Reminder reminder : reminders) {
-			if (reminder.getTitle().equals(reminderDetails[1]) && reminder.getUsername().equals(reminderDetails[0])) {
-				(new ErrorCommand(in, out, conn, "A reminder with that title already exists")).execute();
-				return;
+		if (reminders != null) {
+			for (Reminder reminder : reminders) {
+				if (reminder.getTitle().equals(reminderDetails[1])
+						&& reminder.getUsername().equals(reminderDetails[0])) {
+					(new ErrorCommand(in, out, conn, "A reminder with that title already exists")).execute();
+					return;
+				}
 			}
 		}
+		System.out.println("Reminders checked.");
 
 		if (!(reminderDetails[2].equals("text") || reminderDetails[2].equals("sound")
 				|| reminderDetails[2].equals("popup"))) {
