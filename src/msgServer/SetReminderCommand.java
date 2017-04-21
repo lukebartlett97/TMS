@@ -30,7 +30,7 @@ public class SetReminderCommand implements Command {
 		reminderDetails[6] = in.readLine(); // hour
 		reminderDetails[7] = in.readLine(); // minute
 		reminderDetails[8] = in.readLine(); // message
-
+		System.out.println("All inputs taken");
 		if (reminderDetails[0] == null) {
 			(new ErrorCommand(in, out, conn, "Incorrect User")).execute();
 			return;
@@ -66,6 +66,7 @@ public class SetReminderCommand implements Command {
 			return;
 		}
 
+		System.out.println("Non-date validation complete.");
 		if (reminderDetails[3] == null) {
 			(new ErrorCommand(in, out, conn, "Year is empty")).execute();
 			return;
@@ -121,12 +122,17 @@ public class SetReminderCommand implements Command {
 			return;
 		}
 
+		System.out.println("Date validation complete");
 		LocalDateTime dateTime = LocalDateTime.of(reminderDetailsInts[0], reminderDetailsInts[1],
 				reminderDetailsInts[2], reminderDetailsInts[3], reminderDetailsInts[4]);
 
+		System.out.println("LocalDateTime created");
 		Reminder reminder = new Reminder(reminderDetails[0], reminderDetails[1], dateTime, reminderDetails[2],
 				reminderDetails[8]);
+
+		System.out.println("Reminder created");
 		conn.getServer().getReminders().addReminder(reminder);
+		System.out.println("Reminder added");
 		out.write("200\r\n");
 		out.flush();
 		/*
