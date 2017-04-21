@@ -10,7 +10,7 @@ import java.util.List;
 public class ReminderAlerter extends Thread {
 	private MessageServer server;
 
-	public ReminderAlerter(List<Reminder> reminders, MessageServer server) {
+	public ReminderAlerter(MessageServer server) {
 		super();
 		this.server = server;
 	}
@@ -19,16 +19,19 @@ public class ReminderAlerter extends Thread {
 		;
 		// Main thread loop
 		while (true) {
+			System.out.println("Checking reminders...");
 			// Loops through each reminder
 			for (Reminder reminder : server.getReminders().getReminders()) {
 				// Checks if it is time to give the user the alarm
 				if (alertTime(reminder)) {
+					System.out.println("Time for reminder!");
 					// Finds the socket that the user is logged into - null if
 					// user isnt logged into server
 					Socket userSocket = findUserSocket(reminder.getUsername());
 					if (userSocket != null) {
 						// Sends reminder and removes it from list
 						sendReminder(reminder, userSocket);
+						System.out.println("Reminder sent.");
 						server.getReminders().removeReminder(reminder);;
 					}
 				}

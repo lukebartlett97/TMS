@@ -42,6 +42,8 @@ public class MessageServer {
 		// Construct a new (empty) MessageCollection
 		messages = new MessageCollection();
 		reminders = new ReminderCollection();
+		ReminderAlerter alerter = new ReminderAlerter(this);
+		alerter.start();
 
 	}
 
