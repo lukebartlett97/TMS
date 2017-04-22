@@ -1,4 +1,4 @@
-	package msgServer;
+package msgServer;
 
 public class MsgProtocol {
 	/*
@@ -51,19 +51,26 @@ public class MsgProtocol {
 	 */
 	public static final int UPDATE_USER = 108;
 	/**
-	 * 
+	 * Client requests to set a reminder. Following lines are: username\r\n
+	 * title\r\n type\r\n year\r\n month\r\n day\r\n hour \r\n minutes\r\n
+	 * message\r\n type can be popup, text, or sound. Title must be unique to
+	 * that user.
 	 */
 	public static final int SET_REMINDER = 109;
 	/**
-	 * 
+	 * Client requests to access their reminders. Following lines are:
+	 * username\r\n. Server responds by sending all reminders.
 	 */
 	public static final int ACCESS_REMINDERS = 110;
 	/**
-	 * 
+	 * Client requests to update a reminder. Following lines are: username\r\n
+	 * title\r\n changeString\r\n changeValue\r\n. changeString can be: title,
+	 * datetime, type, or message.
 	 */
 	public static final int UPDATE_REMINDER = 111;
 	/**
-	 * 
+	 * Client requests to cancel a reminder. Following lines are: username\r\n
+	 * title\r\n.
 	 */
 	public static final int CANCEL_REMINDER = 112;
 	/* -------------- Responses --------------- */

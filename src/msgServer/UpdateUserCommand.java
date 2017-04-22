@@ -15,24 +15,23 @@ public class UpdateUserCommand implements Command {
 		this.out = out;
 		this.conn = serverConn;
 	}
-	
+
 	public void editDatabase(String username, String field, String value) {
 		Connection dbConnection = null;
 		Statement updateStatement = null;
-		if(value.equals("")){
+		if (value.equals("")) {
 			value = null;
-		}
-		else{
+		} else {
 			value = "'" + value + "'";
 		}
 		try {
-			dbConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/userdetails", "groupcwk", "textMessaging");
+			dbConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/userdetails", "groupcwk",
+					"textMessaging");
 			updateStatement = dbConnection.createStatement();
-			String updateSql = "update customers "
-							+ " set " + field + "=" + value
-							+ " where username= '" + username + "'";
+			String updateSql = "update customers " + " set " + field + "=" + value + " where username= '" + username
+					+ "'";
 			updateStatement.executeUpdate(updateSql);
-			System.out.println("Successfully updated database.");
+			conn.userMsg("Successfully updated database.");
 			dbConnection.close();
 			updateStatement.close();
 		} catch (Exception exc) {
@@ -42,9 +41,19 @@ public class UpdateUserCommand implements Command {
 	}
 
 	public void editFile(String username, String field, String value) {
-		//REMEMBER: When changing username, change current user
-		//When changing ANYTHING, update userInfo in MessageServer
+		// REMEMBER: When changing username, change current user
+		// When changing ANYTHING, update userInfo in MessageServer
 		System.out.println("TEST - Username:" + username + " FieldNo:" + field + " Value:" + value);
+	}
+
+	public void changeUsername(String oldName, String newName) {
+		for (Reminder reminder : conn.getServer().getReminders().getReminders()) {
+			if (reminder.getUsername().equals(oldName)) {
+				reminder.setUsername(newName);
+			}
+		}
+		conn.getServer().getMessages().changeUsername(oldName, newName);
+		conn.setCurrentUser(newName);
 	}
 
 	public void execute() throws IOException {
@@ -76,6 +85,7 @@ public class UpdateUserCommand implements Command {
 				return;
 			}
 			editDatabase(username, "username", changeValue);
+			changeUsername(currentUser, username);
 		} else if (changeVariable.equalsIgnoreCase("password")) {
 			if (changeValue.length() < 3) {
 				(new ErrorCommand(in, out, conn, "Password too short")).execute();
@@ -100,9 +110,9 @@ public class UpdateUserCommand implements Command {
 			editDatabase(username, "telNumber", changeValue);
 		} else if (changeVariable.equalsIgnoreCase("address")) {
 			editDatabase(username, "address", changeValue);
-		}
-		else{
-			(new ErrorCommand(in, out, conn, "Valid types: username | password | dateofbirth | phonenumber | address")).execute();
+		} else {
+			(new ErrorCommand(in, out, conn, "Valid types: username | password | dateofbirth | phonenumber | address"))
+					.execute();
 			return;
 		}
 		out.write("200 \r\n");

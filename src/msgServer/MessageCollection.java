@@ -90,4 +90,12 @@ public class MessageCollection {
 		}
 		return null;
 	}
+
+	synchronized public void changeUsername(String oldName, String newName) {
+		if (messages.containsKey(oldName)) {
+			Vector msgList = (Vector) messages.get(oldName);
+			messages.put(newName, msgList);
+			messages.remove(oldName);
+		}
+	}
 }

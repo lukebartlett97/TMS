@@ -26,7 +26,6 @@ public class ReminderAlerter extends Thread {
 			for (Reminder reminder : server.getReminders().getReminders()) {
 				// Checks if it is time to give the user the alarm
 				if (alertTime(reminder)) {
-					System.out.println("Time for reminder!");
 					// Finds the socket that the user is logged into - null if
 					// user isnt logged into server
 					Socket userSocket = findUserSocket(reminder.getUsername());
@@ -35,13 +34,12 @@ public class ReminderAlerter extends Thread {
 						sendReminder(reminder, userSocket);
 						System.out.println("Reminder sent.");
 						remindersToRemove.add(reminder);
-					}
-					else{
-						System.out.println("User not logged in..");						
+					} else {
+						System.out.println("User: " + reminder.getUsername() + " not logged in.");
 					}
 				}
 			}
-			for(Reminder reminder : remindersToRemove){
+			for (Reminder reminder : remindersToRemove) {
 				server.getReminders().removeReminder(reminder);
 			}
 			// Sleeps thread

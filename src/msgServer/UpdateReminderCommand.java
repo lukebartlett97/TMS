@@ -19,13 +19,12 @@ public class UpdateReminderCommand implements Command {
 
 	public void execute() throws IOException {
 		;
-		// Use following line to get reminder list.
-		// List<Reminder> reminders = conn.getServer().getReminders();
-		// <username>, <title>, <title||dateTime||message||type>
+		// Takes in initial inputs
 		String user = in.readLine();
 		String title = in.readLine();
 		String changeVariable = in.readLine();
 		List<String> changeValues = new ArrayList<>();
+		// Time requires more lines - array handles that
 		if (changeVariable.equalsIgnoreCase("dateTime")) {
 			changeValues.add(in.readLine());
 			changeValues.add(in.readLine());
@@ -36,31 +35,39 @@ public class UpdateReminderCommand implements Command {
 			changeValues.add(in.readLine());
 		}
 		String currentUser = conn.getCurrentUser();
+		// Checks if a user is logged on
 		if (currentUser == null) {
 			(new ErrorCommand(in, out, conn, "Incorrect User")).execute();
 			return;
 		}
+		// CHecks if the correct user is logged on
 		if (!currentUser.equals(user)) {
 			(new ErrorCommand(in, out, conn, "Incorrect User")).execute();
 			return;
 		}
+		// Search for reminder with matching Username + Title combination
 		Reminder reminderToSet = null;
 		for (Reminder reminder : conn.getServer().getReminders().getReminders()) {
 			if (reminder.getUsername().equals(user) && reminder.getTitle().equals(title)) {
 				reminderToSet = reminder;
 			}
 		}
+		// Reminder is not found error
 		if (reminderToSet == null) {
 			(new ErrorCommand(in, out, conn, "Reminder not found")).execute();
 			return;
 		}
+		// Checks if all values are filled out
 		for (String changeValue : changeValues) {
 			if (changeValue == null) {
 				(new ErrorCommand(in, out, conn, "Invalid Value")).execute();
 				return;
 			}
 		}
+		// Specific checks for each value in reminder - Same as checks used when
+		// setting a reminder
 		if (changeVariable.equalsIgnoreCase("title")) {
+			// Check if reminder is taken
 			List<Reminder> reminders = conn.getServer().getReminders().getReminders();
 			for (Reminder reminder : reminders) {
 				if (reminder.getUsername().equals(user) && reminder.getTitle().equals(changeValues.get(0))) {
@@ -70,6 +77,7 @@ public class UpdateReminderCommand implements Command {
 			}
 			reminderToSet.setTitle(changeValues.get(0));
 		} else if (changeVariable.equalsIgnoreCase("dateTime")) {
+			// Check all inputs are integers
 			int[] dateTimeInts = new int[5];
 			for (int i = 0; i < 5; i++) {
 				try {
@@ -85,6 +93,7 @@ public class UpdateReminderCommand implements Command {
 		} else if (changeVariable.equalsIgnoreCase("message")) {
 			reminderToSet.setMessage(changeValues.get(0));
 		} else if (changeVariable.equalsIgnoreCase("type")) {
+			// Check a valid type is entered
 			if (!(changeValues.get(0).equals("text") || changeValues.get(0).equals("sound")
 					|| changeValues.get(0).equals("popup"))) {
 				(new ErrorCommand(in, out, conn, "Invalid Reminder Type.")).execute();

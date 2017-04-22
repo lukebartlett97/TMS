@@ -4,7 +4,8 @@ import java.util.*;
 
 public class ReminderCollection {
 	private List<Reminder> reminders;
-	public ReminderCollection(){
+
+	public ReminderCollection() {
 		reminders = new ArrayList<Reminder>();
 	}
 
@@ -15,6 +16,7 @@ public class ReminderCollection {
 	public void removeReminder(Reminder reminder) {
 		reminders.remove(reminder);
 	}
+
 	public List<Reminder> getReminders() {
 		return reminders;
 	}

@@ -48,7 +48,7 @@ public class RegisterUserCommand implements Command {
 					+ userDetails[0] + "', '" + userDetails[1] + "', " + userDetails[2] + ", " + userDetails[3] + ", "
 					+ userDetails[4] + ")";
 			dbStatement.executeUpdate(inputSql);
-			System.out.println("Successfully added to database.");
+			conn.userMsg("Successfully added " + userDetails[0] + " to database.");
 			dbConnection.close();
 			dbStatement.close();
 		} catch (Exception exc) {
@@ -85,7 +85,7 @@ public class RegisterUserCommand implements Command {
 			return;
 		}
 
-		if (userDetails[1].length() <= 3) {
+		if (userDetails[1].length() < 3) {
 			(new ErrorCommand(in, out, conn, "Password too short")).execute();
 			return;
 		}
