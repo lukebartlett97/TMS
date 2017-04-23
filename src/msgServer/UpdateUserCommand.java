@@ -96,7 +96,7 @@ public class UpdateUserCommand implements Command {
 			}
 			// Edit the username in the database for the current user.
 			editDatabase(username, "username", changeValue);
-			changeUsername(currentUser, username);
+			changeUsername(currentUser, changeValue);
 		} else if (changeVariable.equalsIgnoreCase("password")) {
 			if (changeValue.length() < 3) {
 				(new ErrorCommand(in, out, conn, "Password too short")).execute();
