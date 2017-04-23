@@ -31,7 +31,7 @@ public class SetReminderCommand implements Command {
 		reminderDetails[7] = in.readLine(); // minute
 		reminderDetails[8] = in.readLine(); // message
 		if (reminderDetails[0] == null) {
-			(new ErrorCommand(in, out, conn, "Incorrect User")).execute();
+			(new ErrorCommand(in, out, conn, "No user details")).execute();
 			return;
 		}
 
@@ -42,7 +42,7 @@ public class SetReminderCommand implements Command {
 		}
 
 		if (currentUser == null) {
-			(new ErrorCommand(in, out, conn, "Incorrect User")).execute();
+			(new ErrorCommand(in, out, conn, "You must be logged in to use this command.")).execute();
 			return;
 		}
 
@@ -80,46 +80,46 @@ public class SetReminderCommand implements Command {
 		}
 
 		if (reminderDetails[4] == null) {
-			(new ErrorCommand(in, out, conn, "Year is empty")).execute();
+			(new ErrorCommand(in, out, conn, "Month is empty")).execute();
 			return;
 		}
 		try {
 			reminderDetailsInts[1] = Integer.parseInt(reminderDetails[4]);
 		} catch (Exception e) {
-			(new ErrorCommand(in, out, conn, "Year is not a valid number")).execute();
+			(new ErrorCommand(in, out, conn, "Month is not a valid number")).execute();
 			return;
 		}
 
 		if (reminderDetails[5] == null) {
-			(new ErrorCommand(in, out, conn, "Year is empty")).execute();
+			(new ErrorCommand(in, out, conn, "Day is empty")).execute();
 			return;
 		}
 		try {
 			reminderDetailsInts[2] = Integer.parseInt(reminderDetails[5]);
 		} catch (Exception e) {
-			(new ErrorCommand(in, out, conn, "Year is not a valid number")).execute();
+			(new ErrorCommand(in, out, conn, "Day is not a valid number")).execute();
 			return;
 		}
 
 		if (reminderDetails[6] == null) {
-			(new ErrorCommand(in, out, conn, "Year is empty")).execute();
+			(new ErrorCommand(in, out, conn, "Hour is empty")).execute();
 			return;
 		}
 		try {
 			reminderDetailsInts[3] = Integer.parseInt(reminderDetails[6]);
 		} catch (Exception e) {
-			(new ErrorCommand(in, out, conn, "Year is not a valid number")).execute();
+			(new ErrorCommand(in, out, conn, "Hour is not a valid number")).execute();
 			return;
 		}
 
 		if (reminderDetails[7] == null) {
-			(new ErrorCommand(in, out, conn, "Year is empty")).execute();
+			(new ErrorCommand(in, out, conn, "Minute is empty")).execute();
 			return;
 		}
 		try {
 			reminderDetailsInts[4] = Integer.parseInt(reminderDetails[7]);
 		} catch (Exception e) {
-			(new ErrorCommand(in, out, conn, "Year is not a valid number")).execute();
+			(new ErrorCommand(in, out, conn, "Minute is not a valid number")).execute();
 			return;
 		}
 
