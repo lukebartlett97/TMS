@@ -32,12 +32,10 @@ public class GetAllMsgsCommand implements Command {
 		}
 		// intialise an array (msgs) that is used to hold all the messages read
 		// and set it's initialised value to null
-
-		// use the method getAllMessages(user) to populate the msgs array
-
-		// check if msgs is not equal to null
 		Message[] messages = null;
+		// use the method getAllMessages(user) to populate the msgs array
 		messages = conn.getServer().getMessages().getAllMessages(user);
+		// check if msgs is not equal to null
 		if (messages == null) {
 			(new ErrorCommand(in, out, conn, "No Messages")).execute();
 			return;

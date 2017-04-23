@@ -43,7 +43,10 @@ public class AccessRemindersCommand implements Command {
 				printReminders.add(reminder);
 			}
 		}
-
+		if(printReminders.size() == 0){
+			(new ErrorCommand(in, out, conn, "No Reminders")).execute();
+			return;
+		}
 		out.write("202");
 		out.write("" + printReminders.size());
 		for (Reminder reminder : printReminders) {
