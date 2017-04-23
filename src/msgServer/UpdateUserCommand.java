@@ -19,24 +19,34 @@ public class UpdateUserCommand implements Command {
 	public void editDatabase(String username, String field, String value) {
 		Connection dbConnection = null;
 		Statement updateStatement = null;
+		// If the user inputs an empty string for a field, make it null so that the database can process it.
 		if (value.equals("")) {
 			value = null;
+			// Change the user's input in to literal in SQL string so it is accessible by the database.
 		} else {
 			value = "'" + value + "'";
 		}
 		try {
+			// Connect to the database.
 			dbConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/userdetails", "groupcwk",
 					"textMessaging");
+			// Create a statement for the database.
 			updateStatement = dbConnection.createStatement();
+			// Create a string that holds the SQL information to update a field for a given username.
 			String updateSql = "update customers " + " set " + field + "=" + value + " where username= '" + username
 					+ "'";
+			// Execute the update.
 			updateStatement.executeUpdate(updateSql);
+			// Provide a message to confirm that the update has been successful.
 			conn.userMsg("Successfully updated database.");
+			// Close the connection and statement objects.
 			dbConnection.close();
 			updateStatement.close();
+			// Handle any exceptions.
 		} catch (Exception exc) {
 			exc.printStackTrace();
 		}
+		// Reload the database with the new update.
 		conn.getServer().loadFromDatabase();
 	}
 
@@ -84,6 +94,7 @@ public class UpdateUserCommand implements Command {
 				(new ErrorCommand(in, out, conn, "That username already exists")).execute();
 				return;
 			}
+			// Edit the username in the database for the current user.
 			editDatabase(username, "username", changeValue);
 			changeUsername(currentUser, username);
 		} else if (changeVariable.equalsIgnoreCase("password")) {
@@ -91,6 +102,7 @@ public class UpdateUserCommand implements Command {
 				(new ErrorCommand(in, out, conn, "Password too short")).execute();
 				return;
 			}
+			// Edit the password in the database for the current user.
 			editDatabase(username, "password", changeValue);
 		} else if (changeVariable.equalsIgnoreCase("dateofbirth")) {
 			if (changeValue.equals("") == false) {
@@ -99,6 +111,7 @@ public class UpdateUserCommand implements Command {
 					return;
 				}
 			}
+			// Edit the date of birth in the database for the current user.
 			editDatabase(username, "DOB", changeValue);
 		} else if (changeVariable.equalsIgnoreCase("phonenumber")) {
 			if (changeValue.equals("") == false) {
@@ -107,8 +120,10 @@ public class UpdateUserCommand implements Command {
 					return;
 				}
 			}
+			// Edit the telephone number in the database for the current user.
 			editDatabase(username, "telNumber", changeValue);
 		} else if (changeVariable.equalsIgnoreCase("address")) {
+			// Edit the address in the database for the current user.
 			editDatabase(username, "address", changeValue);
 		} else {
 			(new ErrorCommand(in, out, conn, "Valid types: username | password | dateofbirth | phonenumber | address"))

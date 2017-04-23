@@ -33,13 +33,11 @@ public class MessageServer {
 	public MessageServer(int portNumber) throws IOException {
 		// save the port number
 		port = portNumber;
-		// load the user details from the password file
 		// First create a new properties object
 		oldUserInfo = new Properties();
-		// set up a FileInputStream which will be used to read in the user
-		// details
+		// Call the method that connects to the database and processes the information.
 		loadFromDatabase();
-		// loadUserInfo();
+		// OLD: loadUserInfo();
 		// Construct a new (empty) MessageCollection
 		messages = new MessageCollection();
 		reminders = new ReminderCollection();
@@ -65,9 +63,10 @@ public class MessageServer {
 			// Connect to database
 			dbConnect = DriverManager.getConnection("jdbc:mysql://localhost:3306/userdetails", "groupcwk",
 					"textMessaging");
-			// Executes SQL string input to load database
+			// Creates a statement and a result set to execute the SQL string input and load the database by selecting all information.
 			dbStatement = dbConnect.createStatement();
 			dbResultSet = dbStatement.executeQuery("select * from customers");
+			// Provides a message to confirm successful connection to the database and that the data is loading.
 			userMsg("Loading from database.");
 			// Loads each user into the list
 			while (dbResultSet.next()) {
@@ -77,12 +76,15 @@ public class MessageServer {
 				nextUserInfo[2] = dbResultSet.getString(3);
 				nextUserInfo[3] = dbResultSet.getString(4);
 				nextUserInfo[4] = dbResultSet.getString(5);
+				// Prints out the data from the database for each user.
 				userMsg(Arrays.toString(nextUserInfo));
 				userInfo.add(nextUserInfo);
 			}
+			// Closes the connection, statement and result set objects.
 			dbConnect.close();
 			dbStatement.close();
 			dbResultSet.close();
+			// Handles any SQL Exceptions.
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

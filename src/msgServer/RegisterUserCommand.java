@@ -42,15 +42,19 @@ public class RegisterUserCommand implements Command {
 			// Starts connection
 			dbConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/userdetails", "groupcwk",
 					"textMessaging");
-			// Executes SQL string input using userDetails
+			// Create a statement to use with the database.
 			dbStatement = dbConnection.createStatement();
+			// Creates a string to hold the SQL which allows a new user to be added to the table using the fields of userDetails.
 			String inputSql = "insert into customers " + " (username, password, DOB, telNumber, address)" + " values ('"
 					+ userDetails[0] + "', '" + userDetails[1] + "', " + userDetails[2] + ", " + userDetails[3] + ", "
 					+ userDetails[4] + ")";
+			// Execute the SQL statement.
 			dbStatement.executeUpdate(inputSql);
 			conn.userMsg("Successfully added " + userDetails[0] + " to database.");
+			// Closes the connection and statement objects.
 			dbConnection.close();
 			dbStatement.close();
+			// Handle any exceptions.
 		} catch (Exception exc) {
 			exc.printStackTrace();
 		}
@@ -112,7 +116,8 @@ public class RegisterUserCommand implements Command {
 			}
 
 		}
-
+		
+		// Call the method storeInDatabase to register a new user and print out the status code 200 to show that it has been successful.
 		storeInDatabase(userDetails);
 		out.write("200 \r\n");
 		out.flush();
