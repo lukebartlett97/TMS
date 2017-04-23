@@ -27,7 +27,7 @@ public class ReminderAlerter extends Thread {
 				// Checks if it is time to give the user the alarm
 				if (alertTime(reminder)) {
 					// Finds the socket that the user is logged into - null if
-					// user isnt logged into server
+					// user isn't logged into server
 					Socket userSocket = findUserSocket(reminder.getUsername());
 					if (userSocket != null) {
 						// Sends reminder and removes it from list

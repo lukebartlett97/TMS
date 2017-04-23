@@ -3,6 +3,7 @@ package msgServer;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AccessRemindersCommand implements Command {
@@ -35,21 +36,19 @@ public class AccessRemindersCommand implements Command {
 			return;
 		}
 
-		boolean newMessage = false;
+		List<Reminder> printReminders = new ArrayList<>();
 		List<Reminder> reminders = conn.getServer().getReminders().getReminders();
 		for (Reminder reminder : reminders) {
 			if (reminder.getUsername().equals(currentUser)) {
-				out.write(reminder.getTitle() + "\r\n" + reminder.getDate() + "\r\n" + reminder.getType() + "\r\n"
-						+ reminder.getMessage());
-				newMessage = true;
+				printReminders.add(reminder);
 			}
 		}
 
-		if (newMessage == false) {
-			out.write("No new messages");
+		out.write("202");
+		out.write("" + printReminders.size());
+		for (Reminder reminder : printReminders) {
+			out.write(reminder.createAlertMessage() + "\r\n");
 		}
-
-		out.write("200\r\n");
 		out.flush();
 
 		// Use following line to get reminder list for all users.
